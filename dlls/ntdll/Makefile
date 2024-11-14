@@ -1,0 +1,21 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean unix/version.c libntdll.a x86_64-windows/libntdll.a \
+  version.res ntdll.so x86_64-windows/actctx.o x86_64-windows/atom.o x86_64-windows/crypt.o \
+  x86_64-windows/debugbuffer.o x86_64-windows/env.o x86_64-windows/error.o \
+  x86_64-windows/exception.o x86_64-windows/handletable.o x86_64-windows/heap.o \
+  x86_64-windows/large_int.o x86_64-windows/loader.o x86_64-windows/locale.o x86_64-windows/math.o \
+  x86_64-windows/misc.o x86_64-windows/path.o x86_64-windows/printf.o x86_64-windows/process.o \
+  x86_64-windows/reg.o x86_64-windows/relay.o x86_64-windows/resource.o x86_64-windows/rtl.o \
+  x86_64-windows/rtlbitmap.o x86_64-windows/rtlstr.o x86_64-windows/sec.o \
+  x86_64-windows/signal_arm.o x86_64-windows/signal_arm64.o x86_64-windows/signal_arm64ec.o \
+  x86_64-windows/signal_i386.o x86_64-windows/signal_x86_64.o x86_64-windows/string.o \
+  x86_64-windows/sync.o x86_64-windows/thread.o x86_64-windows/threadpool.o x86_64-windows/time.o \
+  x86_64-windows/unwind.o x86_64-windows/version.o x86_64-windows/wcstring.o \
+  x86_64-windows/ntdll.dll unix/cdrom.o unix/debug.o unix/env.o unix/file.o unix/loader.o \
+  unix/loadorder.o unix/process.o unix/registry.o unix/security.o unix/serial.o unix/server.o \
+  unix/signal_arm.o unix/signal_arm64.o unix/signal_i386.o unix/signal_x86_64.o unix/socket.o \
+  unix/sync.o unix/system.o unix/tape.o unix/thread.o unix/virtual.o unix/version.o:
+	@cd ../.. && $(MAKE) dlls/ntdll/$@
+.PHONY: all install install-lib install-dev clean

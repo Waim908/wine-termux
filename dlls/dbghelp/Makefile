@@ -1,0 +1,13 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean libdbghelp.a x86_64-windows/libdbghelp.a version.res \
+  x86_64-windows/coff.o x86_64-windows/cpu_arm.o x86_64-windows/cpu_arm64.o \
+  x86_64-windows/cpu_i386.o x86_64-windows/cpu_x86_64.o x86_64-windows/dbghelp.o \
+  x86_64-windows/dwarf.o x86_64-windows/elf_module.o x86_64-windows/image.o \
+  x86_64-windows/macho_module.o x86_64-windows/minidump.o x86_64-windows/module.o \
+  x86_64-windows/msc.o x86_64-windows/path.o x86_64-windows/pe_module.o x86_64-windows/source.o \
+  x86_64-windows/stabs.o x86_64-windows/stack.o x86_64-windows/storage.o x86_64-windows/symbol.o \
+  x86_64-windows/type.o x86_64-windows/dbghelp.dll:
+	@cd ../.. && $(MAKE) dlls/dbghelp/$@
+.PHONY: all install install-lib install-dev clean

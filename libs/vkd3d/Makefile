@@ -1,0 +1,23 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean libs/vkd3d-shader/hlsl.tab.h libs/vkd3d-shader/preproc.tab.h libs/vkd3d-shader/hlsl.yy.c \
+  libs/vkd3d-shader/hlsl.tab.c libs/vkd3d-shader/preproc.yy.c libs/vkd3d-shader/preproc.tab.c \
+  x86_64-windows/libvkd3d.a x86_64-windows/libs/vkd3d-common/blob.o \
+  x86_64-windows/libs/vkd3d-common/debug.o x86_64-windows/libs/vkd3d-common/error.o \
+  x86_64-windows/libs/vkd3d-common/memory.o x86_64-windows/libs/vkd3d-common/utf8.o \
+  x86_64-windows/libs/vkd3d-shader/checksum.o x86_64-windows/libs/vkd3d-shader/d3d_asm.o \
+  x86_64-windows/libs/vkd3d-shader/d3dbc.o x86_64-windows/libs/vkd3d-shader/dxbc.o \
+  x86_64-windows/libs/vkd3d-shader/dxil.o x86_64-windows/libs/vkd3d-shader/fx.o \
+  x86_64-windows/libs/vkd3d-shader/glsl.o x86_64-windows/libs/vkd3d-shader/hlsl.o \
+  x86_64-windows/libs/vkd3d-shader/hlsl_codegen.o \
+  x86_64-windows/libs/vkd3d-shader/hlsl_constant_ops.o x86_64-windows/libs/vkd3d-shader/ir.o \
+  x86_64-windows/libs/vkd3d-shader/spirv.o x86_64-windows/libs/vkd3d-shader/tpf.o \
+  x86_64-windows/libs/vkd3d-shader/vkd3d_shader_main.o x86_64-windows/libs/vkd3d/cache.o \
+  x86_64-windows/libs/vkd3d/command.o x86_64-windows/libs/vkd3d/device.o \
+  x86_64-windows/libs/vkd3d/resource.o x86_64-windows/libs/vkd3d/state.o \
+  x86_64-windows/libs/vkd3d/utils.o x86_64-windows/libs/vkd3d/vkd3d_main.o \
+  x86_64-windows/libs/vkd3d-shader/hlsl.yy.o x86_64-windows/libs/vkd3d-shader/hlsl.tab.o \
+  x86_64-windows/libs/vkd3d-shader/preproc.yy.o x86_64-windows/libs/vkd3d-shader/preproc.tab.o:
+	@cd ../.. && $(MAKE) libs/vkd3d/$@
+.PHONY: clean

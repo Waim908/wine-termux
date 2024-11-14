@@ -1,0 +1,21 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean x86_64-windows/libtiff.a x86_64-windows/libtiff/tif_aux.o x86_64-windows/libtiff/tif_close.o \
+  x86_64-windows/libtiff/tif_codec.o x86_64-windows/libtiff/tif_compress.o \
+  x86_64-windows/libtiff/tif_dir.o x86_64-windows/libtiff/tif_dirinfo.o \
+  x86_64-windows/libtiff/tif_dirread.o x86_64-windows/libtiff/tif_dirwrite.o \
+  x86_64-windows/libtiff/tif_dumpmode.o x86_64-windows/libtiff/tif_error.o \
+  x86_64-windows/libtiff/tif_fax3.o x86_64-windows/libtiff/tif_fax3sm.o \
+  x86_64-windows/libtiff/tif_flush.o x86_64-windows/libtiff/tif_hash_set.o \
+  x86_64-windows/libtiff/tif_jpeg.o x86_64-windows/libtiff/tif_luv.o \
+  x86_64-windows/libtiff/tif_lzw.o x86_64-windows/libtiff/tif_next.o \
+  x86_64-windows/libtiff/tif_open.o x86_64-windows/libtiff/tif_packbits.o \
+  x86_64-windows/libtiff/tif_pixarlog.o x86_64-windows/libtiff/tif_predict.o \
+  x86_64-windows/libtiff/tif_read.o x86_64-windows/libtiff/tif_strip.o \
+  x86_64-windows/libtiff/tif_swab.o x86_64-windows/libtiff/tif_thunder.o \
+  x86_64-windows/libtiff/tif_tile.o x86_64-windows/libtiff/tif_warning.o \
+  x86_64-windows/libtiff/tif_win32.o x86_64-windows/libtiff/tif_write.o \
+  x86_64-windows/libtiff/tif_zip.o:
+	@cd ../.. && $(MAKE) libs/tiff/$@
+.PHONY: clean

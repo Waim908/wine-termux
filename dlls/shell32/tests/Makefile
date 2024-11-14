@@ -1,0 +1,19 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all clean check test testclean x86_64-windows/shell32_test-stripped.exe x86_64-windows/appbar.ok \
+  x86_64-windows/assoc.ok x86_64-windows/autocomplete.ok x86_64-windows/brsfolder.ok \
+  x86_64-windows/ebrowser.ok x86_64-windows/generated.ok x86_64-windows/progman_dde.ok \
+  x86_64-windows/recyclebin.ok x86_64-windows/shelldispatch.ok x86_64-windows/shelllink.ok \
+  x86_64-windows/shellole.ok x86_64-windows/shellpath.ok x86_64-windows/shfldr_special.ok \
+  x86_64-windows/shlexec.ok x86_64-windows/shlfileop.ok x86_64-windows/shlfolder.ok \
+  x86_64-windows/shlview.ok x86_64-windows/string.ok x86_64-windows/systray.ok rsrc.res \
+  x86_64-windows/appbar.o x86_64-windows/assoc.o x86_64-windows/autocomplete.o \
+  x86_64-windows/brsfolder.o x86_64-windows/ebrowser.o x86_64-windows/generated.o \
+  x86_64-windows/progman_dde.o x86_64-windows/recyclebin.o x86_64-windows/shelldispatch.o \
+  x86_64-windows/shelllink.o x86_64-windows/shellole.o x86_64-windows/shellpath.o \
+  x86_64-windows/shfldr_special.o x86_64-windows/shlexec.o x86_64-windows/shlfileop.o \
+  x86_64-windows/shlfolder.o x86_64-windows/shlview.o x86_64-windows/string.o \
+  x86_64-windows/systray.o x86_64-windows/testlist.o x86_64-windows/shell32_test.exe:
+	@cd ../../.. && $(MAKE) dlls/shell32/tests/$@
+.PHONY: all clean check test testclean

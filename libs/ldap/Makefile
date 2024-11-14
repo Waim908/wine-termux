@@ -1,0 +1,25 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean x86_64-windows/libldap.a x86_64-windows/liblber/bprint.o x86_64-windows/liblber/decode.o \
+  x86_64-windows/liblber/encode.o x86_64-windows/liblber/io.o x86_64-windows/liblber/memory.o \
+  x86_64-windows/liblber/nt_err.o x86_64-windows/liblber/options.o x86_64-windows/liblber/sockbuf.o \
+  x86_64-windows/libldap/abandon.o x86_64-windows/libldap/add.o x86_64-windows/libldap/avl.o \
+  x86_64-windows/libldap/bind.o x86_64-windows/libldap/charray.o x86_64-windows/libldap/compare.o \
+  x86_64-windows/libldap/controls.o x86_64-windows/libldap/cyrus.o x86_64-windows/libldap/delete.o \
+  x86_64-windows/libldap/error.o x86_64-windows/libldap/extended.o x86_64-windows/libldap/fetch.o \
+  x86_64-windows/libldap/filter.o x86_64-windows/libldap/free.o x86_64-windows/libldap/getattr.o \
+  x86_64-windows/libldap/getdn.o x86_64-windows/libldap/getentry.o \
+  x86_64-windows/libldap/getvalues.o x86_64-windows/libldap/init.o x86_64-windows/libldap/lbase64.o \
+  x86_64-windows/libldap/ldif.o x86_64-windows/libldap/modify.o x86_64-windows/libldap/modrdn.o \
+  x86_64-windows/libldap/open.o x86_64-windows/libldap/options.o x86_64-windows/libldap/os-ip.o \
+  x86_64-windows/libldap/pagectrl.o x86_64-windows/libldap/print.o \
+  x86_64-windows/libldap/references.o x86_64-windows/libldap/request.o \
+  x86_64-windows/libldap/result.o x86_64-windows/libldap/sasl.o x86_64-windows/libldap/sasl_w.o \
+  x86_64-windows/libldap/schema.o x86_64-windows/libldap/search.o x86_64-windows/libldap/sortctrl.o \
+  x86_64-windows/libldap/string.o x86_64-windows/libldap/tavl.o x86_64-windows/libldap/thr_nt.o \
+  x86_64-windows/libldap/tls2.o x86_64-windows/libldap/tls_w.o x86_64-windows/libldap/unbind.o \
+  x86_64-windows/libldap/url.o x86_64-windows/libldap/utf-8.o x86_64-windows/libldap/util-int.o \
+  x86_64-windows/libldap/vlvctrl.o:
+	@cd ../.. && $(MAKE) libs/ldap/$@
+.PHONY: clean

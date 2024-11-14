@@ -1,0 +1,30 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib clean wineps.res wineps.so x86_64-windows/afm.o x86_64-windows/bitblt.o \
+  x86_64-windows/bitmap.o x86_64-windows/brush.o x86_64-windows/builtin.o x86_64-windows/clipping.o \
+  x86_64-windows/color.o x86_64-windows/data/AvantGarde_Book.o \
+  x86_64-windows/data/AvantGarde_BookOblique.o x86_64-windows/data/AvantGarde_Demi.o \
+  x86_64-windows/data/AvantGarde_DemiOblique.o x86_64-windows/data/Bookman_Demi.o \
+  x86_64-windows/data/Bookman_DemiItalic.o x86_64-windows/data/Bookman_Light.o \
+  x86_64-windows/data/Bookman_LightItalic.o x86_64-windows/data/Courier.o \
+  x86_64-windows/data/Courier_Bold.o x86_64-windows/data/Courier_BoldOblique.o \
+  x86_64-windows/data/Courier_Oblique.o x86_64-windows/data/Helvetica.o \
+  x86_64-windows/data/Helvetica_Bold.o x86_64-windows/data/Helvetica_BoldOblique.o \
+  x86_64-windows/data/Helvetica_Narrow.o x86_64-windows/data/Helvetica_Narrow_Bold.o \
+  x86_64-windows/data/Helvetica_Narrow_BoldOblique.o x86_64-windows/data/Helvetica_Narrow_Oblique.o \
+  x86_64-windows/data/Helvetica_Oblique.o x86_64-windows/data/NewCenturySchlbk_Bold.o \
+  x86_64-windows/data/NewCenturySchlbk_BoldItalic.o x86_64-windows/data/NewCenturySchlbk_Italic.o \
+  x86_64-windows/data/NewCenturySchlbk_Roman.o x86_64-windows/data/Palatino_Bold.o \
+  x86_64-windows/data/Palatino_BoldItalic.o x86_64-windows/data/Palatino_Italic.o \
+  x86_64-windows/data/Palatino_Roman.o x86_64-windows/data/Symbol.o x86_64-windows/data/Times_Bold.o \
+  x86_64-windows/data/Times_BoldItalic.o x86_64-windows/data/Times_Italic.o \
+  x86_64-windows/data/Times_Roman.o x86_64-windows/data/ZapfChancery_MediumItalic.o \
+  x86_64-windows/data/ZapfDingbats.o x86_64-windows/data/agl.o x86_64-windows/direction.o \
+  x86_64-windows/download.o x86_64-windows/driver.o x86_64-windows/encode.o x86_64-windows/escape.o \
+  x86_64-windows/font.o x86_64-windows/graphics.o x86_64-windows/init.o x86_64-windows/pen.o \
+  x86_64-windows/ppd.o x86_64-windows/printproc.o x86_64-windows/ps.o x86_64-windows/text.o \
+  x86_64-windows/type1.o x86_64-windows/type1afm.o x86_64-windows/type42.o x86_64-windows/vertical.o \
+  x86_64-windows/wineps.drv unixlib.o wineps.pot:
+	@cd ../.. && $(MAKE) dlls/wineps.drv/$@
+.PHONY: all install install-lib clean

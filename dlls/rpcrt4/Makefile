@@ -1,0 +1,16 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean epm.h ndr_types.h x86_64-windows/epm_c.c \
+  x86_64-windows/ndr_types_p.c dlldata.c librpcrt4.a x86_64-windows/librpcrt4.a \
+  x86_64-windows/librpcrt4.delay.a version.res x86_64-windows/cproxy.o x86_64-windows/cpsf.o \
+  x86_64-windows/cstub.o x86_64-windows/ndr_clientserver.o x86_64-windows/ndr_contexthandle.o \
+  x86_64-windows/ndr_es.o x86_64-windows/ndr_fullpointer.o x86_64-windows/ndr_marshall.o \
+  x86_64-windows/ndr_ole.o x86_64-windows/ndr_stubless.o x86_64-windows/ndr_typelib.o \
+  x86_64-windows/rpc_assoc.o x86_64-windows/rpc_async.o x86_64-windows/rpc_binding.o \
+  x86_64-windows/rpc_epmap.o x86_64-windows/rpc_message.o x86_64-windows/rpc_server.o \
+  x86_64-windows/rpc_transport.o x86_64-windows/rpcrt4_main.o x86_64-windows/thunks.o \
+  x86_64-windows/epm_c.o x86_64-windows/ndr_types_p.o x86_64-windows/dlldata.o \
+  x86_64-windows/rpcrt4.dll:
+	@cd ../.. && $(MAKE) dlls/rpcrt4/$@
+.PHONY: all install install-lib install-dev clean

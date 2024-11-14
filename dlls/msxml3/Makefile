@@ -1,0 +1,17 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib clean xmlparser.h xslpattern.tab.h xslpattern.yy.c xslpattern.tab.c \
+  schemas.res version.res x86_64-windows/attribute.o x86_64-windows/bsc.o x86_64-windows/cdata.o \
+  x86_64-windows/comment.o x86_64-windows/dispex.o x86_64-windows/docfrag.o x86_64-windows/doctype.o \
+  x86_64-windows/domdoc.o x86_64-windows/domimpl.o x86_64-windows/element.o \
+  x86_64-windows/entityref.o x86_64-windows/factory.o x86_64-windows/httprequest.o \
+  x86_64-windows/main.o x86_64-windows/mxnamespace.o x86_64-windows/mxwriter.o x86_64-windows/node.o \
+  x86_64-windows/nodelist.o x86_64-windows/nodemap.o x86_64-windows/parseerror.o x86_64-windows/pi.o \
+  x86_64-windows/saxreader.o x86_64-windows/schema.o x86_64-windows/selection.o \
+  x86_64-windows/stylesheet.o x86_64-windows/text.o x86_64-windows/uuid.o x86_64-windows/xdr.o \
+  x86_64-windows/xmldoc.o x86_64-windows/xmlelem.o x86_64-windows/xmlparser.o \
+  x86_64-windows/xmlview.o x86_64-windows/xslpattern.yy.o x86_64-windows/xslpattern.tab.o \
+  x86_64-windows/msxml3_v1_t.res x86_64-windows/xmlparser_r.res x86_64-windows/msxml3.dll:
+	@cd ../.. && $(MAKE) dlls/msxml3/$@
+.PHONY: all install install-lib clean

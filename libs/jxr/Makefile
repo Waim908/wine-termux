@@ -1,0 +1,16 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean x86_64-windows/libjxr.a x86_64-windows/image/decode/JXRTranscode.o \
+  x86_64-windows/image/decode/decode.o x86_64-windows/image/decode/postprocess.o \
+  x86_64-windows/image/decode/segdec.o x86_64-windows/image/decode/strInvTransform.o \
+  x86_64-windows/image/decode/strPredQuantDec.o x86_64-windows/image/decode/strdec.o \
+  x86_64-windows/image/encode/encode.o x86_64-windows/image/encode/segenc.o \
+  x86_64-windows/image/encode/strFwdTransform.o x86_64-windows/image/encode/strPredQuantEnc.o \
+  x86_64-windows/image/encode/strenc.o x86_64-windows/image/sys/adapthuff.o \
+  x86_64-windows/image/sys/image.o x86_64-windows/image/sys/strPredQuant.o \
+  x86_64-windows/image/sys/strTransform.o x86_64-windows/image/sys/strcodec.o \
+  x86_64-windows/jxrgluelib/JXRGlue.o x86_64-windows/jxrgluelib/JXRGlueJxr.o \
+  x86_64-windows/jxrgluelib/JXRGluePFC.o x86_64-windows/jxrgluelib/JXRMeta.o:
+	@cd ../.. && $(MAKE) libs/jxr/$@
+.PHONY: clean

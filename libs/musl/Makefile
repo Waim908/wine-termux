@@ -1,0 +1,56 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean x86_64-windows/libmusl.a x86_64-windows/src/math/__cos.o x86_64-windows/src/math/__cosdf.o \
+  x86_64-windows/src/math/__expo2.o x86_64-windows/src/math/__expo2f.o \
+  x86_64-windows/src/math/__fpclassify.o x86_64-windows/src/math/__fpclassifyf.o \
+  x86_64-windows/src/math/__math_divzero.o x86_64-windows/src/math/__math_divzerof.o \
+  x86_64-windows/src/math/__math_invalid.o x86_64-windows/src/math/__math_invalidf.o \
+  x86_64-windows/src/math/__rem_pio2.o x86_64-windows/src/math/__rem_pio2_large.o \
+  x86_64-windows/src/math/__rem_pio2f.o x86_64-windows/src/math/__sin.o \
+  x86_64-windows/src/math/__sindf.o x86_64-windows/src/math/__tan.o \
+  x86_64-windows/src/math/__tandf.o x86_64-windows/src/math/acos.o x86_64-windows/src/math/acosf.o \
+  x86_64-windows/src/math/acosh.o x86_64-windows/src/math/acoshf.o x86_64-windows/src/math/asin.o \
+  x86_64-windows/src/math/asinf.o x86_64-windows/src/math/asinh.o x86_64-windows/src/math/asinhf.o \
+  x86_64-windows/src/math/atan.o x86_64-windows/src/math/atan2.o x86_64-windows/src/math/atan2f.o \
+  x86_64-windows/src/math/atanf.o x86_64-windows/src/math/atanh.o x86_64-windows/src/math/atanhf.o \
+  x86_64-windows/src/math/cbrt.o x86_64-windows/src/math/cbrtf.o x86_64-windows/src/math/ceil.o \
+  x86_64-windows/src/math/ceilf.o x86_64-windows/src/math/copysign.o \
+  x86_64-windows/src/math/copysignf.o x86_64-windows/src/math/cos.o x86_64-windows/src/math/cosf.o \
+  x86_64-windows/src/math/cosh.o x86_64-windows/src/math/coshf.o x86_64-windows/src/math/erf.o \
+  x86_64-windows/src/math/erff.o x86_64-windows/src/math/exp.o x86_64-windows/src/math/exp2.o \
+  x86_64-windows/src/math/exp2f.o x86_64-windows/src/math/exp2f_data.o \
+  x86_64-windows/src/math/exp_data.o x86_64-windows/src/math/expf.o x86_64-windows/src/math/expm1.o \
+  x86_64-windows/src/math/expm1f.o x86_64-windows/src/math/fabs.o x86_64-windows/src/math/fabsf.o \
+  x86_64-windows/src/math/fdim.o x86_64-windows/src/math/fdimf.o x86_64-windows/src/math/floor.o \
+  x86_64-windows/src/math/floorf.o x86_64-windows/src/math/fma.o x86_64-windows/src/math/fmaf.o \
+  x86_64-windows/src/math/fmax.o x86_64-windows/src/math/fmaxf.o x86_64-windows/src/math/fmin.o \
+  x86_64-windows/src/math/fminf.o x86_64-windows/src/math/fmod.o x86_64-windows/src/math/fmodf.o \
+  x86_64-windows/src/math/frexp.o x86_64-windows/src/math/frexpf.o x86_64-windows/src/math/hypot.o \
+  x86_64-windows/src/math/hypotf.o x86_64-windows/src/math/ilogb.o x86_64-windows/src/math/ilogbf.o \
+  x86_64-windows/src/math/j0.o x86_64-windows/src/math/j1.o x86_64-windows/src/math/jn.o \
+  x86_64-windows/src/math/ldexp.o x86_64-windows/src/math/lgamma.o \
+  x86_64-windows/src/math/lgamma_r.o x86_64-windows/src/math/lgammaf.o \
+  x86_64-windows/src/math/lgammaf_r.o x86_64-windows/src/math/log.o x86_64-windows/src/math/log10.o \
+  x86_64-windows/src/math/log10f.o x86_64-windows/src/math/log1p.o x86_64-windows/src/math/log1pf.o \
+  x86_64-windows/src/math/log2.o x86_64-windows/src/math/log2_data.o x86_64-windows/src/math/log2f.o \
+  x86_64-windows/src/math/log2f_data.o x86_64-windows/src/math/log_data.o \
+  x86_64-windows/src/math/logb.o x86_64-windows/src/math/logbf.o x86_64-windows/src/math/logf.o \
+  x86_64-windows/src/math/logf_data.o x86_64-windows/src/math/modf.o x86_64-windows/src/math/modff.o \
+  x86_64-windows/src/math/nan.o x86_64-windows/src/math/nanf.o x86_64-windows/src/math/nextafter.o \
+  x86_64-windows/src/math/nextafterf.o x86_64-windows/src/math/nexttoward.o \
+  x86_64-windows/src/math/nexttowardf.o x86_64-windows/src/math/pow.o \
+  x86_64-windows/src/math/pow_data.o x86_64-windows/src/math/powf.o \
+  x86_64-windows/src/math/powf_data.o x86_64-windows/src/math/remainder.o \
+  x86_64-windows/src/math/remainderf.o x86_64-windows/src/math/remquo.o \
+  x86_64-windows/src/math/remquof.o x86_64-windows/src/math/rint.o x86_64-windows/src/math/rintf.o \
+  x86_64-windows/src/math/round.o x86_64-windows/src/math/roundf.o x86_64-windows/src/math/scalbn.o \
+  x86_64-windows/src/math/scalbnf.o x86_64-windows/src/math/signgam.o x86_64-windows/src/math/sin.o \
+  x86_64-windows/src/math/sincos.o x86_64-windows/src/math/sincosf.o x86_64-windows/src/math/sinf.o \
+  x86_64-windows/src/math/sinh.o x86_64-windows/src/math/sinhf.o x86_64-windows/src/math/sqrt.o \
+  x86_64-windows/src/math/sqrt_data.o x86_64-windows/src/math/sqrtf.o x86_64-windows/src/math/tan.o \
+  x86_64-windows/src/math/tanf.o x86_64-windows/src/math/tanh.o x86_64-windows/src/math/tanhf.o \
+  x86_64-windows/src/math/tgamma.o x86_64-windows/src/math/tgammaf.o x86_64-windows/src/math/trunc.o \
+  x86_64-windows/src/math/truncf.o:
+	@cd ../.. && $(MAKE) libs/musl/$@
+.PHONY: clean

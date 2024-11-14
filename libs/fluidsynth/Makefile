@@ -1,0 +1,20 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+clean x86_64-windows/libfluidsynth.a x86_64-windows/glib.o x86_64-windows/src/midi/fluid_midi.o \
+  x86_64-windows/src/rvoice/fluid_adsr_env.o x86_64-windows/src/rvoice/fluid_chorus.o \
+  x86_64-windows/src/rvoice/fluid_iir_filter.o x86_64-windows/src/rvoice/fluid_lfo.o \
+  x86_64-windows/src/rvoice/fluid_rev.o x86_64-windows/src/rvoice/fluid_rvoice.o \
+  x86_64-windows/src/rvoice/fluid_rvoice_dsp.o x86_64-windows/src/rvoice/fluid_rvoice_event.o \
+  x86_64-windows/src/rvoice/fluid_rvoice_mixer.o x86_64-windows/src/sfloader/fluid_defsfont.o \
+  x86_64-windows/src/sfloader/fluid_samplecache.o x86_64-windows/src/sfloader/fluid_sffile.o \
+  x86_64-windows/src/sfloader/fluid_sfont.o x86_64-windows/src/synth/fluid_chan.o \
+  x86_64-windows/src/synth/fluid_event.o x86_64-windows/src/synth/fluid_gen.o \
+  x86_64-windows/src/synth/fluid_mod.o x86_64-windows/src/synth/fluid_synth.o \
+  x86_64-windows/src/synth/fluid_synth_monopoly.o x86_64-windows/src/synth/fluid_tuning.o \
+  x86_64-windows/src/synth/fluid_voice.o x86_64-windows/src/utils/fluid_conv.o \
+  x86_64-windows/src/utils/fluid_hash.o x86_64-windows/src/utils/fluid_list.o \
+  x86_64-windows/src/utils/fluid_ringbuffer.o x86_64-windows/src/utils/fluid_settings.o \
+  x86_64-windows/src/utils/fluid_sys.o:
+	@cd ../.. && $(MAKE) libs/fluidsynth/$@
+.PHONY: clean

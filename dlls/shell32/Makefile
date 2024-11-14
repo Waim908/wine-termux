@@ -1,0 +1,23 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean libshell32.a x86_64-windows/libshell32.a \
+  x86_64-windows/libshell32.delay.a shell32.res x86_64-windows/appbar.o x86_64-windows/assoc.o \
+  x86_64-windows/autocomplete.o x86_64-windows/brsfolder.o x86_64-windows/changenotify.o \
+  x86_64-windows/classes.o x86_64-windows/clipboard.o x86_64-windows/control.o \
+  x86_64-windows/cpanelfolder.o x86_64-windows/dataobject.o x86_64-windows/dde.o \
+  x86_64-windows/debughlp.o x86_64-windows/dialogs.o x86_64-windows/dragdrophelper.o \
+  x86_64-windows/ebrowser.o x86_64-windows/enumidlist.o x86_64-windows/folders.o \
+  x86_64-windows/iconcache.o x86_64-windows/new_menu.o x86_64-windows/pidl.o \
+  x86_64-windows/recyclebin.o x86_64-windows/shell32_main.o x86_64-windows/shelldispatch.o \
+  x86_64-windows/shellitem.o x86_64-windows/shelllink.o x86_64-windows/shellole.o \
+  x86_64-windows/shellord.o x86_64-windows/shellpath.o x86_64-windows/shellreg.o \
+  x86_64-windows/shellstring.o x86_64-windows/shfldr_desktop.o x86_64-windows/shfldr_fs.o \
+  x86_64-windows/shfldr_mycomp.o x86_64-windows/shfldr_netplaces.o x86_64-windows/shfldr_printers.o \
+  x86_64-windows/shlexec.o x86_64-windows/shlfileop.o x86_64-windows/shlfolder.o \
+  x86_64-windows/shlfsbind.o x86_64-windows/shlmenu.o x86_64-windows/shlview.o \
+  x86_64-windows/shlview_cmenu.o x86_64-windows/shpolicy.o x86_64-windows/systray.o \
+  x86_64-windows/shell32_classes_r.res x86_64-windows/shell32_tlb_t.res x86_64-windows/shell32.dll \
+  shell32.pot:
+	@cd ../.. && $(MAKE) dlls/shell32/$@
+.PHONY: all install install-lib install-dev clean

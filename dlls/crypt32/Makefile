@@ -1,0 +1,15 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean libcrypt32.a x86_64-windows/libcrypt32.a \
+  x86_64-windows/libcrypt32.delay.a crypt32.res crypt32.so x86_64-windows/base64.o \
+  x86_64-windows/cert.o x86_64-windows/chain.o x86_64-windows/collectionstore.o \
+  x86_64-windows/context.o x86_64-windows/crl.o x86_64-windows/ctl.o x86_64-windows/decode.o \
+  x86_64-windows/encode.o x86_64-windows/filestore.o x86_64-windows/main.o x86_64-windows/message.o \
+  x86_64-windows/msg.o x86_64-windows/object.o x86_64-windows/oid.o x86_64-windows/pfx.o \
+  x86_64-windows/proplist.o x86_64-windows/protectdata.o x86_64-windows/provstore.o \
+  x86_64-windows/regstore.o x86_64-windows/rootstore.o x86_64-windows/serialize.o \
+  x86_64-windows/sip.o x86_64-windows/store.o x86_64-windows/str.o x86_64-windows/crypt32.dll \
+  unixlib.o crypt32.pot:
+	@cd ../.. && $(MAKE) dlls/crypt32/$@
+.PHONY: all install install-lib install-dev clean

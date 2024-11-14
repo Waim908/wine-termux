@@ -1,0 +1,15 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean libwined3d.a x86_64-windows/libwined3d.a resource.res \
+  version.res x86_64-windows/adapter_gl.o x86_64-windows/adapter_vk.o x86_64-windows/buffer.o \
+  x86_64-windows/context.o x86_64-windows/context_gl.o x86_64-windows/context_vk.o \
+  x86_64-windows/cs.o x86_64-windows/device.o x86_64-windows/directx.o x86_64-windows/ffp_gl.o \
+  x86_64-windows/gl_compat.o x86_64-windows/glsl_shader.o x86_64-windows/palette.o \
+  x86_64-windows/query.o x86_64-windows/resource.o x86_64-windows/sampler.o x86_64-windows/shader.o \
+  x86_64-windows/shader_sm1.o x86_64-windows/shader_sm4.o x86_64-windows/shader_spirv.o \
+  x86_64-windows/stateblock.o x86_64-windows/surface.o x86_64-windows/swapchain.o \
+  x86_64-windows/texture.o x86_64-windows/utils.o x86_64-windows/vertexdeclaration.o \
+  x86_64-windows/view.o x86_64-windows/wined3d_main.o x86_64-windows/wined3d.dll:
+	@cd ../.. && $(MAKE) dlls/wined3d/$@
+.PHONY: all install install-lib install-dev clean

@@ -1,0 +1,14 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean urlmon_urlmon.h x86_64-windows/urlmon_urlmon_p.c dlldata.c \
+  liburlmon.a x86_64-windows/liburlmon.a x86_64-windows/liburlmon.delay.a urlmon.res \
+  x86_64-windows/axinstall.o x86_64-windows/bindctx.o x86_64-windows/binding.o \
+  x86_64-windows/bindprot.o x86_64-windows/download.o x86_64-windows/file.o x86_64-windows/format.o \
+  x86_64-windows/ftp.o x86_64-windows/gopher.o x86_64-windows/http.o x86_64-windows/internet.o \
+  x86_64-windows/mimefilter.o x86_64-windows/mk.o x86_64-windows/protocol.o x86_64-windows/sec_mgr.o \
+  x86_64-windows/session.o x86_64-windows/umon.o x86_64-windows/umstream.o x86_64-windows/uri.o \
+  x86_64-windows/urlmon_main.o x86_64-windows/usrmarshal.o x86_64-windows/urlmon_urlmon_p.o \
+  x86_64-windows/dlldata.o x86_64-windows/urlmon_urlmon_r.res x86_64-windows/urlmon.dll urlmon.pot:
+	@cd ../.. && $(MAKE) dlls/urlmon/$@
+.PHONY: all install install-lib install-dev clean

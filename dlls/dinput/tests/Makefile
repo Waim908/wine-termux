@@ -1,0 +1,14 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all clean check test testclean x86_64-windows/driver_bus.o x86_64-windows/driver_bus.dll \
+  x86_64-windows/driver_hid.o x86_64-windows/driver_hid.dll x86_64-windows/driver_hid_poll.o \
+  x86_64-windows/driver_hid_poll.dll x86_64-windows/dinput_test-stripped.exe \
+  x86_64-windows/device8.ok x86_64-windows/dinput.ok x86_64-windows/force_feedback.ok \
+  x86_64-windows/hid.ok x86_64-windows/hotplug.ok x86_64-windows/joystick8.ok \
+  x86_64-windows/device8.o x86_64-windows/dinput.o x86_64-windows/force_feedback.o \
+  x86_64-windows/hid.o x86_64-windows/hotplug.o x86_64-windows/joystick8.o x86_64-windows/testlist.o \
+  x86_64-windows/driver_bus.dll.res x86_64-windows/driver_hid.dll.res \
+  x86_64-windows/driver_hid_poll.dll.res x86_64-windows/dinput_test.exe:
+	@cd ../../.. && $(MAKE) dlls/dinput/tests/$@
+.PHONY: all clean check test testclean

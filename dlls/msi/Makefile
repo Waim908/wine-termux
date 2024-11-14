@@ -1,0 +1,22 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean msiserver.h sql.tab.h cond.tab.c \
+  x86_64-windows/msiserver_i.c sql.tab.c x86_64-windows/winemsi_c.c x86_64-windows/winemsi_s.c \
+  libmsi.a x86_64-windows/libmsi.a x86_64-windows/libmsi.delay.a msi.res winemsi.h \
+  x86_64-windows/action.o x86_64-windows/alter.o x86_64-windows/appsearch.o \
+  x86_64-windows/assembly.o x86_64-windows/automation.o x86_64-windows/classes.o \
+  x86_64-windows/create.o x86_64-windows/custom.o x86_64-windows/database.o x86_64-windows/delete.o \
+  x86_64-windows/dialog.o x86_64-windows/distinct.o x86_64-windows/drop.o x86_64-windows/files.o \
+  x86_64-windows/font.o x86_64-windows/format.o x86_64-windows/handle.o x86_64-windows/insert.o \
+  x86_64-windows/install.o x86_64-windows/media.o x86_64-windows/msi.o x86_64-windows/msi_main.o \
+  x86_64-windows/msiquery.o x86_64-windows/package.o x86_64-windows/patch.o x86_64-windows/record.o \
+  x86_64-windows/registry.o x86_64-windows/script.o x86_64-windows/select.o x86_64-windows/source.o \
+  x86_64-windows/storages.o x86_64-windows/streams.o x86_64-windows/string.o \
+  x86_64-windows/suminfo.o x86_64-windows/table.o x86_64-windows/tokenize.o x86_64-windows/update.o \
+  x86_64-windows/upgrade.o x86_64-windows/where.o x86_64-windows/cond.tab.o \
+  x86_64-windows/msiserver_i.o x86_64-windows/sql.tab.o x86_64-windows/winemsi_c.o \
+  x86_64-windows/winemsi_s.o x86_64-windows/msiserver_t.res x86_64-windows/msiserver_r.res \
+  x86_64-windows/msi.dll msi.pot:
+	@cd ../.. && $(MAKE) dlls/msi/$@
+.PHONY: all install install-lib install-dev clean

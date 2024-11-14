@@ -1,0 +1,15 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean oleaut32_oaidl.h oleaut32_ocidl.h \
+  x86_64-windows/oleaut32_oaidl_p.c dlldata.c x86_64-windows/oleaut32_ocidl_p.c liboleaut32.a \
+  x86_64-windows/liboleaut32.a x86_64-windows/liboleaut32.delay.a oleaut32.res \
+  x86_64-windows/connpt.o x86_64-windows/dispatch.o x86_64-windows/hash.o x86_64-windows/oleaut.o \
+  x86_64-windows/olefont.o x86_64-windows/olepicture.o x86_64-windows/olepropframe.o \
+  x86_64-windows/recinfo.o x86_64-windows/safearray.o x86_64-windows/thunks.o \
+  x86_64-windows/typelib.o x86_64-windows/usrmarshal.o x86_64-windows/varformat.o \
+  x86_64-windows/variant.o x86_64-windows/vartype.o x86_64-windows/oleaut32_oaidl_p.o \
+  x86_64-windows/dlldata.o x86_64-windows/oleaut32_ocidl_p.o x86_64-windows/oleaut32_oaidl_r.res \
+  x86_64-windows/oleaut32_ocidl_r.res x86_64-windows/oleaut32.dll oleaut32.pot:
+	@cd ../.. && $(MAKE) dlls/oleaut32/$@
+.PHONY: all install install-lib install-dev clean

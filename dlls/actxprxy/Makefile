@@ -1,0 +1,27 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib clean actxprxy_activscp.h actxprxy_comcat.h actxprxy_docobj.h \
+  actxprxy_hlink.h actxprxy_htiface.h actxprxy_htiframe.h actxprxy_objsafe.h actxprxy_ocmm.h \
+  actxprxy_servprov.h actxprxy_shldisp.h actxprxy_shobjidl.h actxprxy_urlhist.h \
+  x86_64-windows/actxprxy_activscp_p.c dlldata.c x86_64-windows/actxprxy_comcat_p.c \
+  x86_64-windows/actxprxy_docobj_p.c x86_64-windows/actxprxy_hlink_p.c \
+  x86_64-windows/actxprxy_htiface_p.c x86_64-windows/actxprxy_htiframe_p.c \
+  x86_64-windows/actxprxy_objsafe_p.c x86_64-windows/actxprxy_ocmm_p.c \
+  x86_64-windows/actxprxy_servprov_p.c x86_64-windows/actxprxy_shldisp_p.c \
+  x86_64-windows/actxprxy_shobjidl_p.c x86_64-windows/actxprxy_urlhist_p.c \
+  x86_64-windows/usrmarshal.o x86_64-windows/actxprxy_activscp_p.o x86_64-windows/dlldata.o \
+  x86_64-windows/actxprxy_comcat_p.o x86_64-windows/actxprxy_docobj_p.o \
+  x86_64-windows/actxprxy_hlink_p.o x86_64-windows/actxprxy_htiface_p.o \
+  x86_64-windows/actxprxy_htiframe_p.o x86_64-windows/actxprxy_objsafe_p.o \
+  x86_64-windows/actxprxy_ocmm_p.o x86_64-windows/actxprxy_servprov_p.o \
+  x86_64-windows/actxprxy_shldisp_p.o x86_64-windows/actxprxy_shobjidl_p.o \
+  x86_64-windows/actxprxy_urlhist_p.o x86_64-windows/actxprxy_activscp_r.res \
+  x86_64-windows/actxprxy_comcat_r.res x86_64-windows/actxprxy_docobj_r.res \
+  x86_64-windows/actxprxy_hlink_r.res x86_64-windows/actxprxy_htiface_r.res \
+  x86_64-windows/actxprxy_htiframe_r.res x86_64-windows/actxprxy_objsafe_r.res \
+  x86_64-windows/actxprxy_ocmm_r.res x86_64-windows/actxprxy_servprov_r.res \
+  x86_64-windows/actxprxy_shldisp_r.res x86_64-windows/actxprxy_shobjidl_r.res \
+  x86_64-windows/actxprxy_urlhist_r.res x86_64-windows/actxprxy.dll:
+	@cd ../.. && $(MAKE) dlls/actxprxy/$@
+.PHONY: all install install-lib clean

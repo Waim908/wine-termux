@@ -1,0 +1,13 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all clean check test testclean x86_64-windows/msvcrt_test-stripped.exe x86_64-windows/cpp.ok \
+  x86_64-windows/data.ok x86_64-windows/dir.ok x86_64-windows/environ.ok x86_64-windows/file.ok \
+  x86_64-windows/heap.ok x86_64-windows/locale.ok x86_64-windows/misc.ok x86_64-windows/printf.ok \
+  x86_64-windows/scanf.ok x86_64-windows/signal.ok x86_64-windows/string.ok x86_64-windows/time.ok \
+  x86_64-windows/cpp.o x86_64-windows/data.o x86_64-windows/dir.o x86_64-windows/environ.o \
+  x86_64-windows/file.o x86_64-windows/heap.o x86_64-windows/locale.o x86_64-windows/misc.o \
+  x86_64-windows/printf.o x86_64-windows/scanf.o x86_64-windows/signal.o x86_64-windows/string.o \
+  x86_64-windows/time.o x86_64-windows/testlist.o x86_64-windows/msvcrt_test.exe:
+	@cd ../../.. && $(MAKE) dlls/msvcrt/tests/$@
+.PHONY: all clean check test testclean

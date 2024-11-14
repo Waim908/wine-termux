@@ -1,0 +1,17 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all clean check test testclean x86_64-windows/windowscodecs_test-stripped.exe \
+  x86_64-windows/bitmap.ok x86_64-windows/bmpformat.ok x86_64-windows/converter.ok \
+  x86_64-windows/ddsformat.ok x86_64-windows/gifformat.ok x86_64-windows/icoformat.ok \
+  x86_64-windows/info.ok x86_64-windows/jpegformat.ok x86_64-windows/metadata.ok \
+  x86_64-windows/palette.ok x86_64-windows/pngformat.ok x86_64-windows/propertybag.ok \
+  x86_64-windows/stream.ok x86_64-windows/tiffformat.ok x86_64-windows/wmpformat.ok \
+  x86_64-windows/bitmap.o x86_64-windows/bmpformat.o x86_64-windows/converter.o \
+  x86_64-windows/ddsformat.o x86_64-windows/gifformat.o x86_64-windows/icoformat.o \
+  x86_64-windows/info.o x86_64-windows/jpegformat.o x86_64-windows/metadata.o \
+  x86_64-windows/palette.o x86_64-windows/pngformat.o x86_64-windows/propertybag.o \
+  x86_64-windows/stream.o x86_64-windows/tiffformat.o x86_64-windows/wmpformat.o \
+  x86_64-windows/testlist.o x86_64-windows/windowscodecs_test.exe:
+	@cd ../../.. && $(MAKE) dlls/windowscodecs/tests/$@
+.PHONY: all clean check test testclean

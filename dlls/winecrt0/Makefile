@@ -1,0 +1,13 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+install install-dev clean libwinecrt0.a x86_64-windows/libwinecrt0.a arm64ec.o crt_dllmain.o \
+  crt_fltused.o debug.o delay_load.o dll_canunload.o dll_main.o dll_register.o exception.o \
+  exe16_entry.o register.o setjmp.o stub.o unix_lib.o x86_64-windows/arm64ec.o \
+  x86_64-windows/crt_dllmain.o x86_64-windows/crt_fltused.o x86_64-windows/debug.o \
+  x86_64-windows/delay_load.o x86_64-windows/dll_canunload.o x86_64-windows/dll_main.o \
+  x86_64-windows/dll_register.o x86_64-windows/exception.o x86_64-windows/exe16_entry.o \
+  x86_64-windows/register.o x86_64-windows/setjmp.o x86_64-windows/stub.o x86_64-windows/unix_lib.o \
+  dll_entry.o dll_soinit.o exe_entry.o exe_main.o exe_wentry.o exe_wmain.o:
+	@cd ../.. && $(MAKE) dlls/winecrt0/$@
+.PHONY: install install-dev clean

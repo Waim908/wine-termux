@@ -1,0 +1,16 @@
+# Auto-generated stub makefile; all rules forward to the top-level makefile
+
+all:
+all install install-lib install-dev clean libgdi32.a x86_64-windows/libgdi32.a \
+  x86_64-windows/libgdi32.delay.a gdi32.res x86_64-windows/dc.o x86_64-windows/emfdc.o \
+  x86_64-windows/enhmetafile.o x86_64-windows/icm.o x86_64-windows/metadc.o \
+  x86_64-windows/metafile.o x86_64-windows/objects.o x86_64-windows/opengl.o x86_64-windows/text.o \
+  x86_64-windows/uniscribe/bidi.o x86_64-windows/uniscribe/bracket.o \
+  x86_64-windows/uniscribe/breaking.o x86_64-windows/uniscribe/direction.o \
+  x86_64-windows/uniscribe/indic.o x86_64-windows/uniscribe/indicsyllable.o \
+  x86_64-windows/uniscribe/linebreak.o x86_64-windows/uniscribe/mirror.o \
+  x86_64-windows/uniscribe/opentype.o x86_64-windows/uniscribe/shape.o \
+  x86_64-windows/uniscribe/shaping.o x86_64-windows/uniscribe/usp10.o x86_64-windows/gdi32.dll \
+  gdi32.pot:
+	@cd ../.. && $(MAKE) dlls/gdi32/$@
+.PHONY: all install install-lib install-dev clean
