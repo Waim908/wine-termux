@@ -1,0 +1,2 @@
+# wine-termux
+Fix tmp 
