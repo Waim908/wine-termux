@@ -1,0 +1,4 @@
+MODULE = vcomp.dll
+
+SOURCES = \
+	main.c
