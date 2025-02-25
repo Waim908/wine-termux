@@ -11,3 +11,12 @@ and mounts the Z drive to
 Releases 文件不是传统的wow64构建，构建时选项--enable-archs=i386,x86_64，故bin目录没有wine64，直接运行wine即可
 
 The Releases file is not a traditional wow64 build. The build options used are --enable-archs=i386,x86_64, so the bin directory does not contain wine64. You can run wine.
+
+wine10.2开始，修改z盘挂载目录为
+/data/data/com.termux/files
+确保不会出现工作目录报错
+
+Wine 10.2 onwards:
+Change Z: drive mount directory to
+/data/data/com.termux/files
+to avoid working directory errors
