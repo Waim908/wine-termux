@@ -1,0 +1,109 @@
+## Introduction
+
+This is essentially a repurposed Wine build script which was made by a fellow legend Kron4ek. It was modified in such a way where it would be feasible to build Wine for Termux Glibc environment. It requires certain changes like different path locations, modified memory addresses due to how different Termux's root file system is and how it works in general. Without these changes, regular Wine builds would not be usable in any way, shape or form.
+
+It is based on Kron4ek's build script, which is used by many, and this fork is customized in a few ways:
+
+- It is possible to patch Wine for Termux glibc environment.
+- Two bootstraps for building - one's for regular builds and another for WoW64 specific builds.
+- It is possible to build for proot/chroot (essentially native Linux) as well as Termux glibc environment.
+- A few QoL improvements like adding esync to vanilla Wine, reverting certain commits which affect usability.
+- A complete rewrite is coming soon, which should allow us a more granual control over what patches are needed/required.
+
+## Download
+
+Currently builds are only available on Github Actions page, so if you wanna grab them - go over there. Make sure that you are logged in, otherwise builda will be grayed out. 
+---
+
+## How to use
+
+Extract to any directory and run applications using the path to the Wine binary. For example:
+
+    /home/username/wine-7.0-amd64/bin/wine application.exe
+
+---
+
+## Requirements
+
+All regular Wine dependencies are required for these builds to work properly, including their 32-bit versions if you plan to run 32-bit applications.
+
+The easiest way to install (almost) all required libraries is to install Wine from your distribution's package repository. I highly recommend to do this, otherwise you will have to manually figure out what libraries are needed, which may be not an easy task.
+
+More precisely, not all the Wine dependencies are strictly required, some of them are optional and needed only for some Windows applications or only for some functions. Still, it's better to keep them all (or at least most of them) installed.
+
+Also, do note that **glibc (libc6)** **2.27** or newer is required.
+
+If you want to use Wine, but don't want to install any of its dependencies, take a look at my [**Conty project**](https://github.com/Kron4ek/Conty). Conty is a container that includes, among other things, Wine and all of its dependencies (including 32-bit ones), you can use it to run any games and programs.
+
+---
+
+### What to do if Wine hangs during prefix creation/updating
+
+There is [a bug in gstreamer](https://bugs.winehq.org/show_bug.cgi?id=51086), which causes Wine to hang during prefix creation/updating, and even if you wait long enough for Wine to finish, your prefix will still be broken.
+
+There are two ways to workaround this issue:
+
+* You can remove the **gst-editing-services** package from your system. The package may have a different name on some Linux distros (for example, on Debian-based distros the package is called libges-1.0-0).
+* You can disable **winegstreamer** before creating/updating your prefix. For example, you can do that with the `WINEDLLOVERRIDES` environment variable:
+
+        export WINEDLLOVERRIDES="winegstreamer="
+        winecfg
+
+The second way, although works, may break video or audio playblack in some games, so it is better to use the first way if possible.
+
+---
+
+## Builds description
+
+### Compilation parameters
+
+Build flags (amd64): `-march=x86-64 -msse3 -mfpmath=sse -O2 -ftree-vectorize`
+
+Build flags (x86): `-march=i686 -msse2 -mfpmath=sse -O2 -ftree-vectorize`
+
+Configure options: `--without-ldap --without-oss --disable-winemenubuilder --disable-win16 --disable-tests`
+
+---
+
+### Architectures
+
+* **amd64** - for 64-bit systems, it can run both 32-bit and 64-bit applications.
+* **x86** - for 32-bit systems, it can run only 32-bit applications.
+
+---
+
+### Available builds
+
+* **Vanilla** is a Wine build compiled from the official WineHQ sources.
+
+* **Staging** is a Wine build with [the Staging patchset](https://github.com/wine-staging/wine-staging) applied. It contains many useful patches that are not present in vanilla.
+
+* **Staging-TkG** is a Wine build with [the Staging patchset](https://github.com/wine-staging/wine-staging) applied and with many additional useful patches. A complete list of patches is in wine-tkg-config.txt inside the build directory. Compiled from [this source code](https://github.com/Kron4ek/wine-tkg), which is generated using [the wine-tkg build system](https://github.com/Frogging-Family/wine-tkg-git).
+
+* **Proton** is a Wine build modified by Valve and other contributors. It contains many useful patches (primarily for a better gaming experience), some of them are unique and not present in other builds. The differences from the official Steam's Proton are the lack of the Proton's python script and the lack of some builtin dlls (like DXVK and vkd3d-proton), the build environment is also different. However, you can still install DXVK and vkd3d-proton manually to your prefix, like you do with regular Wine builds.
+
+* **Wayland** is a Wine build with the patches from the [wine-wayland project](https://github.com/varmd/wine-wayland). Wine-Wayland works only on Wayland (it doesn't work on Xorg at all) and supports only Vulkan, OpenGL is not supported. Thus you can only run Vulkan games with it (by using DXVK and vkd3d as well). Before using, read all the caveats and notes on [the wine-wayland project page](https://github.com/varmd/wine-wayland).
+---
+
+## Compilation / Build environment
+
+I use `create_ubuntu_bootstraps.sh` and `build_wine.sh` to compile my Wine builds, you can use these scripts to compile your own Wine builds. The first script creates two Ubuntu bootstraps (32-bit and 64-bit) and the second script compiles Wine builds inside the created bootstraps by using `bubblewrap`.
+
+These scripts are a pretty convenient way to compile your own Wine builds if you don't trust my binaries or if you want to apply different patches.
+
+---
+
+### Links to the sources
+
+* https://dl.winehq.org/wine/source
+* https://github.com/wine-staging/wine-staging
+* https://github.com/Frogging-Family/wine-tkg-git
+* https://github.com/Kron4ek/wine-tkg
+* https://github.com/ValveSoftware/wine
+* https://github.com/varmd/wine-wayland
+* https://github.com/Kron4ek/wine-wayland
+* https://gitlab.collabora.com/alf/wine/-/tree/wayland
+
+### Credits
+
+Big thanks to: Olegos, JeezDisReez, Hugo, askorbinovaya_kislota and a bunch of others who helped me figure out a way to build Wine for Termux Glibc. Thank you!

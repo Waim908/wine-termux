@@ -1,0 +1,42 @@
+diff --git a/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
+index f3ffd99..e6926b6 100644
+--- a/dlls/ntdll/unix/server.c
++++ b/dlls/ntdll/unix/server.c
+@@ -1240,7 +1240,8 @@ static const char *init_server_dir( dev_t dev, ino_t ino )
+ #ifdef __ANDROID__  /* there's no /tmp dir on Android */
+     asprintf( &dir, "%s/.wineserver/server-%llx-%llx", config_dir, (unsigned long long)dev, (unsigned long long)ino );
+ #else
+-    asprintf( &dir, "/tmp/.wine-%u/server-%llx-%llx", getuid(), (unsigned long long)dev, (unsigned long long)ino );
++    const char *tmp_dir = getenv("WINE_TMP_DIR") ? getenv("WINE_TMP_DIR") : "/data/data/com.termux/files/usr/tmp";
++    asprintf( &dir, "%s/.wine-%u/server-%llx-%llx", tmp_dir, getuid(), (unsigned long long)dev, (unsigned long long)ino );
+ #endif
+     return dir;
+ }
+diff --git a/programs/winemenubuilder/winemenubuilder.c b/programs/winemenubuilder/winemenubuilder.c
+index 36569fa..bf2b178 100644
+--- a/programs/winemenubuilder/winemenubuilder.c
++++ b/programs/winemenubuilder/winemenubuilder.c
+@@ -1724,7 +1724,8 @@ static BOOL build_native_mime_types(struct list *mime_types)
+     if (_wgetenv( L"XDG_DATA_DIRS" ))
+         dirs = xwcsdup( _wgetenv( L"XDG_DATA_DIRS" ));
+     else
+-        dirs = xwcsdup( L"/usr/local/share/:/usr/share/" );
++        dirs = xwcsdup( _wgetenv(L"WINE_SHARE_DIRS") ? _wgetenv(L"WINE_SHARE_DIRS") :
++                         L"/data/data/com.termux/files/usr/glibc/local/share:/data/data/com.termux/files/usr/glibc/share" );
+ 
+     ret = add_mimes(xdg_data_dir, mime_types);
+     if (ret)
+diff --git a/server/request.c b/server/request.c
+index dabcea6..be1e1a8 100644
+--- a/server/request.c
++++ b/server/request.c
+@@ -644,7 +644,8 @@ static char *create_server_dir( int force )
+     if (asprintf( &base_dir, "%s/.wineserver", config_dir ) == -1)
+         fatal_error( "out of memory\n" );
+ #else
+-    if (asprintf( &base_dir, "/tmp/.wine-%u", getuid() ) == -1)
++    const char *tmp_dir = getenv("WINE_TMP_DIR") ? getenv("WINE_TMP_DIR") : "/data/data/com.termux/files/usr/tmp";
++    if (asprintf( &base_dir, "%s/.wine-%u", tmp_dir, getuid() ) == -1)
+         fatal_error( "out of memory\n" );
+ #endif
+     create_dir( base_dir, &st2 );
