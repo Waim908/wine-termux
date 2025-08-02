@@ -1,10 +1,11 @@
 # wine-termux
-Run wine on termux glibc
+
+Fix wine patch
 
 # fix proton 2025.8.2
 
 ## build falid
-bad ffmpeg (old ffmpeg)
+bad ffmpeg (old ffmpeg) and bad opencl (old opencl)
 
 git show NUM | git apply -R
 
@@ -17,14 +18,15 @@ https://github.com/ValveSoftware/wine/commit/a7bbfbd0b28b053da5b793cfd40ed1cce4e
 
 ## configure arg 
 
-add ~--without-piper~ with "x64.sh"
+add `--without-piper` with "x64.sh"
 
 apply proton/XXX.patch
 
-"""
-. /path-to/proton/x64.sh$
-./configure \${arg[@]}  --prefix=/xxx/
-"""
+`patch -p1 < /path/to/proton/XXX.patch`
+
+`. /path-to/proton/x64.sh`
+`./configure \${arg[@]}  --prefix=/xxx/`
+`make -j$(nproc) && make install`
 
 # Thanks
 [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
