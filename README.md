@@ -5,7 +5,7 @@ Fix wine patch
 # fix proton 2025.8.2
 
 ## build falid
-bad ffmpeg (old ffmpeg) and bad opencl (old opencl)
+bad ffmpeg (old ffmpeg) or install ffmpeg4.4 and bad opencl (old opencl)
 
 git show NUM | git apply -R
 
