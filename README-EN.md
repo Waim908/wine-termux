@@ -22,7 +22,7 @@ Use `get_latest_mfplat_patch.sh` to obtain the patch file. Ensure you have an in
 
 ### About "wine-virtual-memory.patch" => mapping.c Patch Application Failure
 
-The patch has been updated to `wine-virtual-memory.patch`.
+The patch has been updated to `wine-virtual-memory2.patch`.
 
 ### Q/A
 
@@ -67,8 +67,8 @@ Apply patches from the "corresponding version folder/XXX.patch".
 Navigate to your source code directory:
 
 ```bash
-patch -p1 < /path/to/proton/XXX.patch
-. /path-to/proton/x64.sh  # or `source` this file
+patch -p1 < /path/to/version/XXX.patch
+. /path-to/x64.sh  # or `source` this file
 ./configure ${arg[@]} --prefix=/xxx/
 make -j$(nproc) && make install
 ```

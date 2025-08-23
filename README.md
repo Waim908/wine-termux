@@ -1,4 +1,4 @@
-[中文](README.md) [English](README-EN.md)
+##### Language: [中文](README.md) [English](README-EN.md)
 
 # wine-termux
 
@@ -23,7 +23,7 @@
 
 ### 关于"wine-virtual-memory.patch" => mapping.c 补丁应用失败
 
-已经迭代补丁 ```wine-virtual-memory.patch```
+已经迭代补丁 ```wine-virtual-memory2.patch```
 
 ### Q/A
 
@@ -64,9 +64,9 @@ A: 有的， 可以添加```--dry-run```来试运行，或者替换```-p1```为`
 
 cd到你的源码目录
 
-```patch -p1 < /path/to/proton/XXX.patch```
+```patch -p1 < /path/to/version/XXX.patch```
 
-```. /path-to/proton/x64.sh``` or ```source``` 这个文件
+```. /path-to/x64.sh``` or ```source``` 这个文件
 
 ```./configure ${arg[@]}  --prefix=/xxx/```
 
