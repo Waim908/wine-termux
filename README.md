@@ -1,3 +1,5 @@
+[中文](README.md) [English](README-EN.md)
+
 # wine-termux
 
 通过补丁使x86_64 wine在termux glibc box64环境可以正常运行，并修复一些问题
@@ -17,8 +19,23 @@
 需要通过```get_latest_mfplat_patch.sh```来获取补丁文件，确保网络可以连接github并安装curl，确保你是最新版主线版本或tkg或tkg-staging的源码，且每次版本更新都需要运行此脚本，如果不备份补丁文件，可能不兼容老版本的源码
 
 
+## 杂项
 
-## About Proton wine
+### 关于"wine-virtual-memory.patch" => mapping.c 补丁应用失败
+
+已经迭代补丁 ```wine-virtual-memory.patch```
+
+### Q/A
+
+Q: ```patch -p1```命令打补丁后显示failed失败怎么办
+A: 可以添加一个```-R```参数， ```patch -p1 -R``` ，如果弹出问题输入y可以应用补丁
+
+Q: 更加保险的```patch```命令参数？
+A: 有的， 可以添加```--dry-run```来试运行，或者替换```-p1```为```-Np1```来跳过已存在的修改
+
+如果有其他问题请反馈issues，针对补丁迭代或修改的请提交拉去请求
+
+## proton wine
 
 ### 关于proton构建失败
 
