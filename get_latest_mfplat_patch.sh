@@ -18,6 +18,6 @@ case $is_staging in
     *) exit ;;
 esac
 echo "HACK补丁可以与上面两个补丁一起应用，也可以选择不用"
-if ! curl --progress-bar -o "${PWD}/gstreamer-patch1.patch" $RAW_URL/wine-tkg-patches/proton/proton_mf_hacks/proton_mf_hacks.patch ; then
+if ! curl --progress-bar -o "${PWD}/proton_mf_hacks.patch" $RAW_URL/wine-tkg-patches/proton/proton_mf_hacks/proton_mf_hacks.patch ; then
     echo "HACK 补丁下载失败"
 fi
