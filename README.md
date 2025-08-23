@@ -6,9 +6,17 @@
 
 ```wine_do_not_create_dxgi_manager.patch``` 此补丁通过新增变量```WINE_DO_NOT_CREATE_DXGI_MANAGER```修复了  gstreamer unity游戏 h264解码问题， <u>注意这依旧不是一个有效方案，且此变量必须赋值1，如果为0部分游戏运行可能出现无法运行等问题</u>
 
-```esync2.patch``` 方案来自<u>hotei33</u>的说明具体可以去看仓库 [wine-tkg glibc分支](https://github.com/hostei33/wine-tkg)
+```esync2.patch``` 方案来自<u>hostei33</u>的说明具体可以去看仓库 [wine-tkg glibc分支](https://github.com/hostei33/wine-tkg)
 
 <u>```esync.patch```和```esync2.patch```只能二选一</u>
+
+## About mfplat patch
+
+修复gstreamer无法解码问题
+
+需要通过```get_latest_mfplat_patch.sh```来获取补丁文件，确保网络可以连接github并安装curl，确保你是最新版主线版本或tkg或tkg-staging的源码，且每次版本更新都需要运行此脚本，如果不备份补丁文件，可能不兼容老版本的源码
+
+
 
 ## About Proton wine
 
@@ -25,13 +33,19 @@
 
 [a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1](https://github.com/ValveSoftware/wine/commit/a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1)
 
-修复
+修复使用```unixlib.patch```
+
+## 获取
+
+```git clone https://github.com/Waim908/wine-termux.git```
 
 ## 构建参数
 
 关于 `--without-piper` 参数不存在之类的报错可以无视，此选项不会影响非proton版本的wine构建
 
 应用 "对应版本的文件夹/XXX.patch"
+
+cd到你的源码目录
 
 ```patch -p1 < /path/to/proton/XXX.patch```
 
@@ -43,3 +57,5 @@
 
 # Thanks
 [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
+
+[Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
