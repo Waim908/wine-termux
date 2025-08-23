@@ -23,7 +23,16 @@ if ! curl --progress-bar -o "${PWD}/proton_mf_hacks.patch" $RAW_URL/wine-tkg-pat
 fi
 echo "缺失文件夹补齐（from Proton）"
 RAW_URL_PROTON="https://raw.githubusercontent.com/ValveSoftware/wine/refs/heads/proton_10.0/dlls/winegstreamer/media-converter"
-rm -rf "${PWD}"/media-converter
+if [[ -d "${PWD}"/media-converter ]]; then
+    read -n 1 -p "${PWD}/media-converter文件夹已经存在，是否重新下载？" yesno_dl
+    case $yesno_dl in
+        Y|y) echo "下载" ;;
+        N|n) echo "取消" 
+        exit 0 ;;
+        *) echo "取消"
+        exit 0 ;;
+    esac
+fi
 mkdir media-converter
 Curl () {
     if ! curl --progress-bar -o "${PWD}/media-converter/$1" $RAW_URL_PROTON/$1; then
