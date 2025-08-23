@@ -1,4 +1,4 @@
-[中文](README.md) [English](README-EN.md)
+##### Language: [中文](README.md) [English](README-EN.md)
 
 # wine-termux
 
