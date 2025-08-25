@@ -18,6 +18,8 @@
 
 需要通过```get_latest_mfplat_patch.sh```来获取补丁文件，确保网络可以连接github并安装curl，确保你是最新版主线版本或tkg或tkg-staging的源码，且每次版本更新都需要运行此脚本，如果不备份补丁文件，可能不兼容老版本的源码
 
+注意补丁在最新版kron4ek wine-tkg和mainline主线版本经过测试应用失败
+
 
 ## 杂项
 
