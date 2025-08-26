@@ -42,7 +42,6 @@ diff -uraN wine-src/dlls/ntdll/unix/esync.c b/dlls/ntdll/unix/esync.c
      {
          /* probably the server isn't running with WINEESYNC, tell the user and bail */
          if (errno == ENOENT)
-diff -uraN wine-src/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
 diff -uraN wine-src/programs/winebrowser/main.c b/programs/winebrowser/main.c
 --- wine-src/programs/winebrowser/main.c	2024-01-15 04:26:14.000000000 -0500
 +++ b/programs/winebrowser/main.c	2024-01-15 05:58:50.272054376 -0500
