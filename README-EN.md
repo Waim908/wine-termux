@@ -1,56 +1,93 @@
-##### Language: [中文](README.md) [English](README-EN.md)
+# Wine for Termux
 
-# wine-termux
+Enables x86_64 Wine to run properly in a Termux glibc and Box64 environment through patches and fixes various issues.
 
-Patches to enable x86_64 Wine to run properly in the Termux glibc box64 environment, along with some issue fixes.
+##### Language: [中文](README.md) | [English](README-EN.md)
 
-## About Some Patch Files
+---
 
-**`wine_do_not_create_dxgi_manager.patch`**: This patch fixes the H264 decoding issue in GStreamer Unity games by adding the variable `WINE_DO_NOT_CREATE_DXGI_MANAGER`. <u>Note: This is still not a definitive solution, and this variable must be set to 1. If set to 0, some games may fail to run or encounter issues.</u>
+## About Patch Files
 
-**`esync2.patch`**: The solution is based on instructions from <u>hostei33</u>. For details, refer to the repository [wine-tkg glibc branch](https://github.com/hostei33/wine-tkg).
+### `wine_do_not_create_dxgi_manager.patch`
+This patch introduces the environment variable `WINE_DO_NOT_CREATE_DXGI_MANAGER` to fix H.264 decoding issues in Unity games using GStreamer.
 
-<u>Only one of `esync.patch` or `esync2.patch` should be applied.</u>
+> **Important Notes**:
+> - This is **still not a perfect solution**.
+> - This variable **must** be set to `1` (i.e., `export WINE_DO_NOT_CREATE_DXGI_MANAGER=1`). If set to `0`, some games may fail to run or encounter other issues.
+
+### `esync.patch` and `esync2.patch`
+- The `esync2.patch` solution originates from [hostei33's wine-tkg glibc branch repository](https://github.com/hostei33/wine-tkg).
+- **Note**: `esync.patch` and `esync2.patch` are **mutually exclusive**. Apply only one of them.
+
+---
+
+## About `wine-tkg-git`
+
+[See Details](wine-tkg-git-staging/README.md)
+
+---
 
 ## About mfplat Patch
 
-Fixes GStreamer decoding issues.
+### !!! This method is currently ineffective !!!
 
-Use `get_latest_mfplat_patch.sh` to obtain the patch file. Ensure you have an internet connection to GitHub and have `curl` installed. Also, make sure you are using the latest mainline, TKG, or TKG-staging source code. This script must be run every time the version is updated. If the patch file is not backed up, it may not be compatible with older source code versions.
+~This patch aimed to fix Gstreamer decoding issues.~
+
+~You needed to run the `get_latest_mfplat_patch.sh` script to fetch the patch file. Ensure:~
+1.  ~Your network can access GitHub.~
+2.  ~`curl` is installed.~
+3.  ~You are using the latest Wine mainline, tkg, or tkg-staging source code.~
+~**Note**: This script needed to be run after every Wine version update. Without backing up patch files, old patches might become incompatible with new source versions.~
+
+~Testing showed this patch failed to apply on the latest kron4ek wine-tkg and mainline versions.~
+
+---
 
 ## Miscellaneous
 
-### About "wine-virtual-memory.patch" => mapping.c Patch Application Failure
+### Regarding `wine-virtual-memory.patch` (mapping.c) Application Failure
 
-The patch has been updated to `wine-virtual-memory2.patch`.
+This issue has been resolved by the iterative patch `wine-virtual-memory2.patch`.
 
-### Q/A
+---
 
-**Q:** What should I do if the `patch -p1` command fails after applying a patch?  
-**A:** You can add the `-R` parameter: `patch -p1 -R`. If prompted, enter `y` to apply the patch.
+## Q/A
 
-**Q:** Are there safer parameters for the `patch` command?  
-**A:** Yes. You can add `--dry-run` for a trial run, or replace `-p1` with `-Np1` to skip existing modifications.
+**Q: The `patch -p1` command fails when applying a patch. What should I do?**
+**A:** You can try adding the `-R` flag for a reverse dry-run to check for conflicts: `patch -p1 -R`. If prompted, answer 'y'. This helps diagnose the issue but is **not** the solution itself.
 
-If you encounter other issues, please report them via Issues. For patch updates or modifications, submit a pull request.
+**Q: Are there safer parameters for the `patch` command?**
+**A:** Yes:
+-   Use `--dry-run` for a trial run without modifying files: `patch -p1 --dry-run < patchfile.patch`
+-   Use `-N` to skip already applied patches: `patch -Np1 < patchfile.patch`
+
+If you encounter other problems, please report them via Issues. For iterations or modifications to the patches, please submit a Pull Request.
+
+---
 
 ## Proton Wine
 
 ### About Proton Build Failures
 
-Use `git show [corresponding commit hash] | git apply -R` or apply the patch files `fix-build_opencl.patch` and `fix-build_ffmpeg.patch`.
+Building the Proton version of Wine might encounter the following issues, which require fixes:
 
-#### opencl
-`dd8d73ba895`: opencl: HACK: Build a stub dll if Unix headers are missing.
+1.  **OpenCL Build Error**:
+    -   **Commit Hash**: `dd8d73ba895`
+    -   **Description**: `opencl: HACK: Build a stub dll if Unix headers are missing.`
+    -   **Solution**: Revert this commit using `git show dd8d73ba895 | git apply -R` or apply the `fix-build_opencl.patch` file.
 
-#### ffmpeg
-`063a29bc8ba`: winedmo: Handle PCM audio big-endian formats.
+2.  **FFmpeg Build Error**:
+    -   **Commit Hash**: `063a29bc8ba`
+    -   **Description**: `winedmo: Handle PCM audio big-endian formats.`
+    -   **Solution**: Revert this commit using `git show 063a29bc8ba | git apply -R` or apply the `fix-build_ffmpeg.patch` file.
 
-### Patch Application Failure for "path-patch-universal.patch" => unixlib.c
+### Patch Application Failure for `path-patch-universal.patch` (unixlib.c)
 
-[a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1](https://github.com/ValveSoftware/wine/commit/a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1)
+This patch corresponds to Valve's Wine commit [a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1](https://github.com/ValveSoftware/wine/commit/a7bbfbd0b28b053da5b793cfd40ed1cce4eb99b1).
 
-Fix using `unixlib.patch`.
+If application fails, try using the `unixlib.patch` to fix the issue.
+
+---
 
 ## Download
 
@@ -58,21 +95,43 @@ Fix using `unixlib.patch`.
 git clone https://github.com/Waim908/wine-termux.git
 ```
 
-## Build Parameters
+---
 
-Errors about non-existent parameters like `--without-piper` can be ignored. This option does not affect the build of non-Proton Wine versions.
+## Build Instructions
 
-Apply patches from the "corresponding version folder/XXX.patch".
+1.  **Apply Patches**:
+    Navigate to your Wine source directory and run the following command to apply the required patches (replace `/path/to/version/` and `XXX.patch` with the actual path and patch name):
+    ```bash
+    cd /path/to/your/wine/source
+    patch -p1 < /path/to/wine-termux/version_folder/XXX.patch
+    ```
 
-Navigate to your source code directory:
+2.  **Set Build Environment**:
+    Use the `source` or `.` command to execute the provided environment script:
+    ```bash
+    . /path-to/wine-termux/x64.sh
+    # or
+    source /path-to/wine-termux/x64.sh
+    ```
 
-```bash
-patch -p1 < /path/to/version/XXX.patch
-. /path-to/x64.sh  # or `source` this file
-./configure ${arg[@]} --prefix=/xxx/
-make -j$(nproc) && make install
-```
+3.  **Configure Build Options**:
+    ```bash
+    ./configure ${arg[@]} --prefix=/your/installation/path/
+    ```
+    > **Note**: Warnings about non-existent options like `--without-piper` during configuration can usually be **ignored**, as this option does not affect the build of non-Proton Wine versions.
 
-# Thanks
-[airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)  
-[Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
+4.  **Compile and Install**:
+    ```bash
+    make -j$(nproc) # Compile using all available CPU cores
+    make install     # Install to the directory specified by --prefix
+    ```
+
+---
+
+## Thanks
+
+Thanks to the following projects and developers:
+
+-   [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
+-   [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
+-   [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
