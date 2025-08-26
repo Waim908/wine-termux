@@ -29,6 +29,27 @@
      {
          /* probably the server isn't running with WINEESYNC, tell the user and bail */
          if (errno == ENOENT)
+diff -uraN wine-src/programs/winebrowser/main.c b/programs/winebrowser/main.c
+--- wine-src/programs/winebrowser/main.c	2024-01-15 04:26:14.000000000 -0500
++++ b/programs/winebrowser/main.c	2024-01-15 05:58:50.272054376 -0500
+@@ -116,7 +116,7 @@
+ {
+     static const WCHAR defaultbrowsers[] =
+         L"xdg-open\0"
+-        "/usr/bin/open\0"
++        "/data/data/com.termux/files/usr/glibc/bin/open\0"
+         "firefox\0"
+         "konqueror\0"
+         "mozilla\0"
+@@ -141,7 +141,7 @@
+ static int open_mailto_url( const WCHAR *url )
+ {
+     static const WCHAR defaultmailers[] =
+-        L"/usr/bin/open\0"
++        L"/data/data/com.termux/files/usr/glibc/bin/open\0"
+         "xdg-email\0"
+         "mozilla-thunderbird\0"
+         "thunderbird\0"
 --- wine-tkg/server/esync.c	2025-08-08 11:17:56.374157263 +0800
 +++ ../debian/proton_wine/server/esync.c	2025-08-25 15:06:41.247468580 +0800
 @@ -23,6 +23,7 @@
@@ -76,27 +97,6 @@
 +        
      if (shm_fd == -1)
          perror( "shm_open" );
-diff -uraN wine-src/programs/winebrowser/main.c b/programs/winebrowser/main.c
---- wine-src/programs/winebrowser/main.c	2024-01-15 04:26:14.000000000 -0500
-+++ b/programs/winebrowser/main.c	2024-01-15 05:58:50.272054376 -0500
-@@ -116,7 +116,7 @@
- {
-     static const WCHAR defaultbrowsers[] =
-         L"xdg-open\0"
--        "/usr/bin/open\0"
-+        "/data/data/com.termux/files/usr/glibc/bin/open\0"
-         "firefox\0"
-         "konqueror\0"
-         "mozilla\0"
-@@ -141,7 +141,7 @@
- static int open_mailto_url( const WCHAR *url )
- {
-     static const WCHAR defaultmailers[] =
--        L"/usr/bin/open\0"
-+        L"/data/data/com.termux/files/usr/glibc/bin/open\0"
-         "xdg-email\0"
-         "mozilla-thunderbird\0"
-         "thunderbird\0"
 diff --git a/server/unicode.c b/server/unicode.c
 index b486431..d5c556d 100644
 --- a/server/unicode.c
