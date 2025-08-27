@@ -23,7 +23,7 @@
 
 ## 关于 `wine-tkg-git`
 
-[查看详情](wine-tkg-git-staging/README.md)
+[查看详情](README-TkG.md)
 
 ---
 

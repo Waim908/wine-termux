@@ -27,6 +27,8 @@ _proton_battleye_support="false"
 
 _proton_eac_support="false"
 
+_proton_winevulkan="false"
+
 _mk11_fix="false"
 ```
 
