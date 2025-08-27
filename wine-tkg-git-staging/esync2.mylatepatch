@@ -1,7 +1,7 @@
-diff -urN wine-git/dlls/ntdll/unix/esync.c b/dlls/ntdll/unix/esync.c
---- wine-git/dlls/ntdll/unix/esync.c	2025-08-26 12:06:46.000000000 +0800
-+++ b/dlls/ntdll/unix/esync.c	2025-08-26 14:42:59.073061309 +0800
-@@ -100,7 +100,7 @@
+diff -urN ValveSoftware-winegit/dlls/ntdll/unix/esync.c b/dlls/ntdll/unix/esync.c
+--- ValveSoftware-winegit/dlls/ntdll/unix/esync.c	2025-08-27 13:09:14.000000000 +0800
++++ b/dlls/ntdll/unix/esync.c	2025-08-27 13:46:52.361055541 +0800
+@@ -96,7 +96,7 @@
  };
  C_ASSERT(sizeof(struct event) == 8);
  
@@ -10,7 +10,7 @@ diff -urN wine-git/dlls/ntdll/unix/esync.c b/dlls/ntdll/unix/esync.c
  static int shm_fd;
  static void **shm_addrs;
  static int shm_addrs_size;  /* length of the allocated shm_addrs array */
-@@ -1319,11 +1319,11 @@
+@@ -1333,11 +1333,11 @@
          ERR("Cannot stat %s\n", config_dir);
  
      if (st.st_ino != (unsigned long)st.st_ino)
@@ -25,19 +25,20 @@ diff -urN wine-git/dlls/ntdll/unix/esync.c b/dlls/ntdll/unix/esync.c
      {
          /* probably the server isn't running with WINEESYNC, tell the user and bail */
          if (errno == ENOENT)
-diff -urN wine-git/programs/winebrowser/main.c b/programs/winebrowser/main.c
---- wine-git/programs/winebrowser/main.c	2025-08-26 12:04:59.000000000 +0800
-+++ b/programs/winebrowser/main.c	2025-08-26 14:38:33.413669653 +0800
-@@ -116,7 +116,7 @@
+diff -urN ValveSoftware-winegit/programs/winebrowser/main.c b/programs/winebrowser/main.c
+--- ValveSoftware-winegit/programs/winebrowser/main.c	2025-08-27 13:09:17.000000000 +0800
++++ b/programs/winebrowser/main.c	2025-08-27 14:31:13.480864623 +0800
+@@ -116,7 +116,8 @@
  {
      static const WCHAR defaultbrowsers[] =
          L"xdg-open\0"
 -        "/usr/bin/open\0"
++        "termux-open\0"
 +        "/data/data/com.termux/files/usr/glibc/bin/open\0"
          "firefox\0"
          "konqueror\0"
          "mozilla\0"
-@@ -141,7 +141,7 @@
+@@ -141,7 +142,7 @@
  static int open_mailto_url( const WCHAR *url )
  {
      static const WCHAR defaultmailers[] =
@@ -46,18 +47,10 @@ diff -urN wine-git/programs/winebrowser/main.c b/programs/winebrowser/main.c
          "xdg-email\0"
          "mozilla-thunderbird\0"
          "thunderbird\0"
-diff -urN wine-git/server/esync.c b/server/esync.c
---- wine-git/server/esync.c	2025-08-26 12:06:46.000000000 +0800
-+++ b/server/esync.c	2025-08-26 14:43:41.402964980 +0800
-@@ -23,6 +23,7 @@
- 
- #include <fcntl.h>
- #include <stdio.h>
-+#include <stdint.h>
- #include <stdarg.h>
- #ifdef HAVE_SYS_EVENTFD_H
- # include <sys/eventfd.h>
-@@ -58,7 +59,7 @@
+diff -urN ValveSoftware-winegit/server/esync.c b/server/esync.c
+--- ValveSoftware-winegit/server/esync.c	2025-08-27 13:09:14.000000000 +0800
++++ b/server/esync.c	2025-08-27 13:37:33.298372725 +0800
+@@ -59,7 +59,7 @@
  #endif
  }
  
@@ -66,7 +59,16 @@ diff -urN wine-git/server/esync.c b/server/esync.c
  static int shm_fd;
  static off_t shm_size;
  static void **shm_addrs;
-@@ -80,13 +81,13 @@
+@@ -69,7 +69,7 @@
+ static void shm_cleanup(void)
+ {
+     close( shm_fd );
+-    if (shm_unlink( shm_name ) == -1)
++    if (unlink( shm_name ) == -1)
+         perror( "shm_unlink" );
+ }
+ 
+@@ -81,13 +81,13 @@
          fatal_error( "cannot stat config dir\n" );
  
      if (st.st_ino != (unsigned long)st.st_ino)
@@ -76,17 +78,18 @@ diff -urN wine-git/server/esync.c b/server/esync.c
 -        sprintf( shm_name, "/wine-%lx-esync", (unsigned long)st.st_ino );
 +        sprintf( shm_name, "/data/data/com.termux/files/usr/tmp/wine-%lx-esync", (unsigned long)st.st_ino );
  
-     shm_unlink( shm_name );
+-    shm_unlink( shm_name );
++    unlink( shm_name );
  
 -    shm_fd = shm_open( shm_name, O_RDWR | O_CREAT | O_EXCL, 0644 );
 +    shm_fd = open( shm_name, O_RDWR | O_CREAT | O_EXCL, 0644 );
      if (shm_fd == -1)
          perror( "shm_open" );
  
-diff -urN wine-git/server/unicode.c b/server/unicode.c
---- wine-git/server/unicode.c	2025-08-26 12:05:00.000000000 +0800
-+++ b/server/unicode.c	2025-08-26 14:26:04.197385291 +0800
-@@ -327,7 +327,7 @@
+diff -urN ValveSoftware-winegit/server/unicode.c b/server/unicode.c
+--- ValveSoftware-winegit/server/unicode.c	2025-08-27 13:08:56.000000000 +0800
++++ b/server/unicode.c	2025-08-27 14:28:03.649303231 +0800
+@@ -313,7 +313,7 @@
  /* load the case mapping table */
  struct fd *load_intl_file(void)
  {
