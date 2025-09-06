@@ -5,6 +5,15 @@ Enables x86_64 Wine to run properly in a Termux glibc and Box64 environment thro
 ##### Language: [中文](README.md) | [English](README-EN.md)
 
 ---
+## RELEASES  
+Using wine-tkg-git as the primary build version, starting from **wine10.14**, two gstreamer decoding options are provided to address game decoding issues:  
+
+The first option directly applies the "do not create dxgi" related patches from this repository.  
+
+The second option uses tkg-git-staging-ge with the "proton_mf_patch" related feature enabled.
+
+part1 => Tag includes unityH264  
+part2 => Version number-tkg-git-staging-ge
 
 ## About Patch Files
 

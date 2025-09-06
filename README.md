@@ -5,6 +5,16 @@
 ##### 语言: [中文](README.md) | [English](README-EN.md)
 
 ---
+## RELEASES
+使用wine-tkg-git作为主要构建版本，从**wine10.14**开始，提供两种gstreamer解码来解决游戏解码问题
+
+第一种直接应用此仓库do not create dxgi相关补丁
+
+第二种就是tkg-git-staging-ge启用proton_mf_patch相关选项
+
+part1＝> tag包含unityH264
+part2＝> 版本号-tkg-git-staging-ge
+
 
 ## 关于补丁文件
 
