@@ -4,11 +4,7 @@
 
 ### commit must ```https://github.com/Frogging-Family/wine-tkg-git/commit/64580ba53112039dfeb21d3378506388da33eb69``` 
 
-### System: ```deabin 13```
-
-## configure ffmpeg 7.1.1 and make & make install
-
-## Mainline Tkg ```wine-10.13``` Config files set
+### System: ```archlinux```
 
 ### customization.cfg
 
@@ -19,7 +15,7 @@ _plain_version="wine-10.13"
 
 _use_staging="true" 
 
-_staging_version="a8a6d7b"
+_staging_version="a8a6d7b" <=自行调整，如果标记为release wine-版本号的的提交导致补丁失败，就用最新的master提交反之用release提交，还是补丁失败自行等待staging更新或者git pull 拉取最新版wine-tkg-git代码
 
 _wayland_driver="false"
 
@@ -33,6 +29,11 @@ _mk11_fix="false"
 ```
 
 ***```_community_patches_auto_update="false"```*** <= ***Important***
+
+# 关于gstreamer解码问题
+应用配置文件里面的```_proton_mf_patches="true"```
+这依旧不是完美的方案，你也可以使用此仓库的```wine_do_not_create_dxgi_manager.patch```<＝(=<10.3)or ```wine_do_not_create_dxgi_manager2.patch``` (>=10.4+)在原版解码基础上允许禁用dxgi管理器
+原版的解码方案和补丁解码方案以及proton和tkg解码方案存在一定差异
 
 ## wine-tkg-profiles/advanced-customization.cfg
 
@@ -48,10 +49,8 @@ _NOLIB32="wow64"
 _configure_userargs64="--disable-winemenubuilder --disable-win16 --enable-win64 --disable-tests --without-capi --without-coreaudio --without-cups --without-gphoto --without-osmesa --without-oss --without-pcap --without-pcsclite --without-sane --without-udev --without-unwind --without-usb --without-v4l2 --without-wayland --without-xinerama --without-piper"
 ```
 
-## script (CUSTOM)
+## 关于依赖
+直接用archlinux系统构建让它自动安装就行了，```yes|./nomakepkg.sh```
 
-run ```./condigure --disable-winemenubuilder --disable-win16 --enable-win64 --disable-tests --without-capi --without-coreaudio --without-cups --without-gphoto --without-osmesa --without-oss --without-pcap --without-pcsclite --without-sane --without-udev --without-unwind --without-usb --without-v4l2 --without-wayland --without-xinerama --without-piper``` check
-
-apt install git sudo wget
-
-gcc-multilib gcc-mingw-w64 libasound2-dev libpulse-dev libdbus-1-dev libfontconfig-dev libfreetype-dev libgnutls28-dev libgl-dev libunwind-dev libx11-dev libxcomposite-dev libxcursor-dev libxfixes-dev libxrandr-dev libxrender-dev libxext-dev libwayland-bin libwayland-dev libegl-dev libwayland-dev libxkbcommon-dev libxkbregistry-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libosmesa6-dev libsdl2-dev libudev-dev libvulkan-dev libcapi20-dev libcups2-dev libgphoto2-dev libsane-dev libkrb5-dev samba-dev ocl-icd-opencl-dev libpcap-dev libusb-1.0-0-dev libv4l-dev libxxf86vm-dev libxinerama-dev gettext bison flex libgcrypt20-dev
+## 其他
+wine-tkg-git突然不拉取esync代码导致esync补丁应用失败，请删除wine-tkg-git重新拉取
