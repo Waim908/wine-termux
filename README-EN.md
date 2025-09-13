@@ -18,7 +18,7 @@ part2 => Version number-tkg-git-staging-ge
 ## About Patch Files
 
 ### `wine_do_not_create_dxgi_manager.patch`
-This patch introduces the environment variable `WINE_DO_NOT_CREATE_DXGI_MANAGER` to fix H.264 decoding issues in Unity games using GStreamer.
+This patch introduces the environment variable `WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER` to fix H.264 decoding issues in Unity games using GStreamer.
 
 > **Important Notes**:
 > - This is **still not a perfect solution**.

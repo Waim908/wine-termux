@@ -19,7 +19,7 @@ part2＝> 版本号-tkg-git-staging-ge
 ## 关于补丁文件
 
 ### `wine_do_not_create_dxgi_manager.patch`
-此补丁通过新增环境变量 `WINE_DO_NOT_CREATE_DXGI_MANAGER` 来修复使用 GStreamer 的 Unity 游戏的 H.264 解码问题。
+此补丁通过新增环境变量 `WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER` 来修复使用 GStreamer 的 Unity 游戏的 H.264 解码问题。
 
 > **注意**：
 > - 这**依旧不是一个完美的解决方案**。
