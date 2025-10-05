@@ -23,7 +23,7 @@ _proton_battleye_support="false"
 
 _proton_eac_support="false"
 
-_proton_winevulkan="false"
+_proton_winevulkan="false" <=有报错的情况
 
 _mk11_fix="false"
 ```
@@ -47,6 +47,8 @@ _CROSS_LD_FLAGS="-Wl,-O3,--sort-common,--as-needed"
 _NOLIB32="wow64"
 # configure arg
 _configure_userargs64="--disable-winemenubuilder --disable-win16 --enable-win64 --disable-tests --without-capi --without-coreaudio --without-cups --without-gphoto --without-osmesa --without-oss --without-pcap --without-pcsclite --without-sane --without-udev --without-unwind --without-usb --without-v4l2 --without-wayland --without-xinerama --without-piper"
+# auto
+_user_patches_no_confirm="true"
 ```
 
 ## 关于依赖

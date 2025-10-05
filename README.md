@@ -5,6 +5,9 @@
 ##### 语言: [中文](README.md) | [English](README-EN.md)
 
 ---
+
+## Kron4ek版本补丁停止更新
+
 ## RELEASES
 使用wine-tkg-git作为主要构建版本，从**wine10.14**开始，提供两种gstreamer解码来解决游戏解码问题
 
