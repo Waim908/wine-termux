@@ -40,6 +40,19 @@ part2＝> 版本号-tkg-git-staging-ge
 
 ---
 
+## 关于gstreamer gl头文件缺失
+
+archlinux
+
+```bash
+cp /lib/gstreamer-1.0/include/gst/gl/gstglconfig.h /usr/include/gstreamer-1.0/gst/
+```
+
+ubuntu/debian
+
+```bash
+/lib/对应架构-linux/gstreamer-1.0/include/gst/gl/gstglconfig.h /usr/include/gstreamer-1.0/gst/
+```
 ## 关于 mfplat 补丁
 
 ### !!! 此方法暂时无效 !!!
