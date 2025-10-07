@@ -2,8 +2,6 @@
 
 通过补丁使 x86_64 Wine 在 Termux glibc 和 Box64 环境中可以正常运行，并修复一些问题。
 
-##### 语言: [中文](README.md) | [English](README-EN.md)
-
 ---
 
 ## Kron4ek版本补丁停止更新
@@ -17,6 +15,8 @@
 
 part1＝> tag包含unityH264
 part2＝> 版本号-tkg-git-staging-ge
+
+新tkg版本使用proton的wine vulkan方案补丁
 
 
 ## 关于补丁文件
@@ -36,7 +36,7 @@ part2＝> 版本号-tkg-git-staging-ge
 
 ## 关于 `wine-tkg-git`
 
-[查看详情](README-TkG.md)
+[查看详情](README_TkG.md)
 
 ---
 
@@ -145,6 +145,6 @@ git clone https://github.com/Waim908/wine-termux.git
 
 感谢以下项目和开发者：
 
--   [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
--   [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
--   [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
+ - [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
+ - [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
+- [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
