@@ -1,0 +1,19 @@
+--- wine-9.2/dlls/mfplat/main.c	2024-02-10 05:46:52.000000000 +0800
++++ proton9/dlls/mfplat/main.c	2025-10-13 07:15:31.884283669 +0800
+@@ -9211,9 +9211,16 @@
+ HRESULT WINAPI MFCreateDXGIDeviceManager(UINT *token, IMFDXGIDeviceManager **manager)
+ {
+     struct dxgi_device_manager *object;
++    const char *do_not_create = getenv("WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER");
+ 
+     TRACE("%p, %p.\n", token, manager);
+ 
++    if (do_not_create && do_not_create[0] != '\0')
++    {
++        FIXME("stubbing out\n");
++        return E_NOTIMPL;
++    }
++
+     if (!token || !manager)
+         return E_POINTER;
+ 
