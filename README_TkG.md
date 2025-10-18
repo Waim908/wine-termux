@@ -46,7 +46,7 @@ _CROSS_LD_FLAGS="-Wl,-O3,--sort-common,--as-needed"
 # enable wow64
 _NOLIB32="wow64"
 # configure arg
-_configure_userargs64="--disable-winemenubuilder --disable-win16 --enable-win64 --disable-tests --without-capi --without-coreaudio --without-cups --without-gphoto --without-osmesa --without-oss --without-pcap --without-pcsclite --without-sane --without-udev --without-unwind --without-usb --without-v4l2 --without-wayland --without-xinerama --without-piper"
+_configure_userargs64="--disable-winemenubuilder --disable-win16 --disable-tests --without-capi --without-coreaudio --without-cups --without-gphoto --without-osmesa --without-oss --without-pcap --without-pcsclite --without-sane --without-udev --without-unwind --without-usb --without-v4l2 --without-wayland --without-xinerama --without-piper"
 # auto
 _user_patches_no_confirm="true"
 ```
