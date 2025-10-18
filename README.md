@@ -4,7 +4,11 @@
 
 ---
 
-# 用了补丁至少提一下此仓库地址，吃相别那么难看Thanks！
+# 本项目基于 [LGPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)协议开源
+
+# Wine_Builds部分使用MIT协议
+
+### 这里按照wine本身的开源协议LGPL2.1为主
 
 ## Kron4ek版本补丁停止更新
 
@@ -162,4 +166,4 @@ git clone https://github.com/Waim908/wine-termux.git
 
  - [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
  - [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
-- [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
+ - [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
