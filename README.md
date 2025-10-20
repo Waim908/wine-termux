@@ -24,6 +24,14 @@ part2＝> 版本号-tkg-git-staging-ge
 
 新tkg版本使用proton的wine vulkan方案补丁
 
+版本号-重置次数 
+
+重置版标准重新制定
+
+unityH264重置版本将不再包含winevulkan提速而是使用原版winevulkan（提高稳定性）
+
+常规重置版本继续正常mf解码修复补丁以及winevulkan支持
+
 
 ## 关于补丁文件
 
