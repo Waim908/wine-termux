@@ -46,6 +46,8 @@ unityH264重置版本将不再包含winevulkan提速而是使用原版winevulkan
 - `esync2.patch` 方案源自 [hostei33 的 wine-tkg glibc 分支仓库](https://github.com/hostei33/wine-tkg)。
 - **注意**：`esync.patch` 和 `esync2.patch` **只能二选一**应用。
 
+`ntsync-fix-32-bit-processes.patch` -- 来自Kron4ek，我也不清楚此补丁是否有用，看后续安卓版本内核是否支持ntsync（10.16+）
+
 ---
 
 ## 关于 `wine-tkg-git`
@@ -173,5 +175,9 @@ git clone https://github.com/Waim908/wine-termux.git
 感谢以下项目和开发者：
 
  - [airidosas252/Wine-Builds](https://github.com/airidosas252/Wine-Builds)
+
  - [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
+
  - [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
+
+ - [Kron4ek/Wine-Builds](https://github.com/Kron4ek/Wine-Builds)
