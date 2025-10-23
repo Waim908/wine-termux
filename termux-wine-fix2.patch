@@ -1,0 +1,41 @@
+diff -urN wine/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
+--- wine/dlls/ntdll/unix/server.c	2025-10-23 00:20:16.156148641 +0800
++++ b/dlls/ntdll/unix/server.c	2025-10-23 18:21:12.023051240 +0800
+@@ -1351,7 +1351,8 @@
+     {
+         mkdir( "drive_c", 0777 );
+         symlink( "../drive_c", "dosdevices/c:" );
+-        symlink( "/", "dosdevices/z:" );
++	symlink( "/sdcard", "dosdevices/d:" );
++        symlink( "/data/data/com.termux/files", "dosdevices/z:" );
+     }
+     else if (errno != EEXIST) fatal_perror( "cannot create %s/dosdevices", config_dir );
+ 
+diff -urN wine/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- wine/dlls/ntdll/unix/virtual.c	2025-10-23 00:20:16.172148853 +0800
++++ b/dlls/ntdll/unix/virtual.c	2025-10-23 18:23:34.472823070 +0800
+@@ -188,9 +188,9 @@
+ static void *address_space_start = (void *)0x10000;
+ #endif
+ #ifdef _WIN64
+-static void *address_space_limit = (void *)0x7fffffff0000;  /* top of the total available address space */
+-static void *user_space_limit    = (void *)0x7fffffff0000;  /* top of the user address space */
+-static void *working_set_limit   = (void *)0x7fffffff0000;  /* top of the current working set */
++static void *address_space_limit = (void *)0x7fffff0000;  /* top of the total available address space */
++static void *user_space_limit    = (void *)0x7fffff0000;  /* top of the user address space */
++static void *working_set_limit   = (void *)0x7fffff0000;  /* top of the current working set */
+ #else
+ static void *address_space_limit = (void *)0xc0000000;
+ static void *user_space_limit    = (void *)0x7fff0000;
+diff -urN wine/loader/preloader.c b/loader/preloader.c
+--- wine/loader/preloader.c	2025-10-23 00:20:21.709222352 +0800
++++ b/loader/preloader.c	2025-10-23 18:24:32.057544786 +0800
+@@ -1449,7 +1449,7 @@
+         {
+             /* don't warn for low 64k */
+             if (preload_info[i].addr >= (void *)0x10000
+-#ifdef __aarch64__
++#ifdef 1
+                 && preload_info[i].addr < (void *)0x7fffffffff /* ARM64 address space might end here*/
+ #endif
+             )
