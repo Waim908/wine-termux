@@ -8,7 +8,7 @@
 
 # Wine_Builds部分使用MIT协议
 
-### 这里按照wine本身的开源协议LGPL2.1为主
+# 这里按照wine本身的开源协议LGPL2.1为主
 
 ## Kron4ek版本补丁停止更新
 

@@ -1,69 +1,41 @@
-diff -urN wine-tkg-scripts/wine64-tkg b/wine64-tkg
---- wine-tkg-scripts/wine64-tkg	2025-08-25 23:43:14.913169286 +0800
-+++ b/wine64-tkg	2025-08-28 15:05:03.918804765 +0800
-@@ -19,6 +19,8 @@
-   export WINEDLLPATH="/usr/lib/x86_64-linux-gnu/wine:/usr/lib/i386-linux-gnu/wine"
- fi
+diff -urN wine/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
+--- wine/dlls/ntdll/unix/server.c	2025-10-23 00:20:16.156148641 +0800
++++ b/dlls/ntdll/unix/server.c	2025-10-23 18:21:12.023051240 +0800
+@@ -1351,7 +1351,8 @@
+     {
+         mkdir( "drive_c", 0777 );
+         symlink( "../drive_c", "dosdevices/c:" );
+-        symlink( "/", "dosdevices/z:" );
++	symlink( "/sdcard", "dosdevices/d:" );
++        symlink( "/data/data/com.termux/files", "dosdevices/z:" );
+     }
+     else if (errno != EEXIST) fatal_perror( "cannot create %s/dosdevices", config_dir );
  
-+echo -e "\e[36m"
-+
- cat >&2 <<'EOM'
-        .---.`               `.---.
-     `/syhhhyso-           -osyhhhys/`
-@@ -41,6 +43,10 @@
- 
- EOM
- 
-+echo -e "\e[1m [wine-termux patch] \e[0m (\e[4mhttps://github.com/Waim908/wine-termux\e[0m)"
-+
-+echo -e "\n\n\n ᗜˬᗜ"
-+
- if [ -x "$(command -v _wine64)" ]; then
-   _wine64 "${@:1}"
- else
-diff -urN wine-tkg-scripts/wine-tkg b/wine-tkg
---- wine-tkg-scripts/wine-tkg	2025-08-25 23:43:14.913169286 +0800
-+++ b/wine-tkg	2025-08-28 15:04:21.616893042 +0800
-@@ -19,6 +19,8 @@
-   export WINEDLLPATH="/usr/lib/x86_64-linux-gnu/wine:/usr/lib/i386-linux-gnu/wine"
- fi
- 
-+echo -e "\e[36m"
-+
- cat >&2 <<'EOM'
-        .---.`               `.---.
-     `/syhhhyso-           -osyhhhys/`
-@@ -41,6 +43,10 @@
- 
- EOM
- 
-+echo -e "\e[1m [wine-termux patch] \e[0m (\e[4mhttps://github.com/Waim908/wine-termux\e[0m)"
-+
-+echo -e "\n\n\n ᗜˬᗜ"
-+
- if [ -x "$(command -v _wine)" ]; then
-   _wine "${@:1}"
- else
-diff -urN wine-tkg-scripts/wine-tkg-interactive b/wine-tkg-interactive
---- wine-tkg-scripts/wine-tkg-interactive	2025-08-25 23:43:14.913169286 +0800
-+++ b/wine-tkg-interactive	2025-08-28 15:07:28.457503130 +0800
-@@ -19,6 +19,8 @@
-   export WINEDLLPATH="/usr/lib/x86_64-linux-gnu/wine:/usr/lib/i386-linux-gnu/wine"
- fi
- 
-+echo -e "\e[36m"
-+
- cat >&2 <<'EOM'
-        .---.`               `.---.
-     `/syhhhyso-           -osyhhhys/`
-@@ -41,6 +43,10 @@
- 
- EOM
- 
-+echo -e "\e[1m [wine-termux patch] \e[0m (\e[4mhttps://github.com/Waim908/wine-termux\e[0m)"
-+
-+echo -e "\n\n\n ᗜˬᗜ"
-+
- read -rp "Please enter your wine command ( examples: wine \"/path/to/your/app\" ; winecfg ; regedit ): " _wine_tkg_command
- 
- $_wine_tkg_command
+diff -urN wine/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- wine/dlls/ntdll/unix/virtual.c	2025-10-23 00:20:16.172148853 +0800
++++ b/dlls/ntdll/unix/virtual.c	2025-10-23 18:23:34.472823070 +0800
+@@ -188,9 +188,9 @@
+ static void *address_space_start = (void *)0x10000;
+ #endif
+ #ifdef _WIN64
+-static void *address_space_limit = (void *)0x7fffffff0000;  /* top of the total available address space */
+-static void *user_space_limit    = (void *)0x7fffffff0000;  /* top of the user address space */
+-static void *working_set_limit   = (void *)0x7fffffff0000;  /* top of the current working set */
++static void *address_space_limit = (void *)0x7fffff0000;  /* top of the total available address space */
++static void *user_space_limit    = (void *)0x7fffff0000;  /* top of the user address space */
++static void *working_set_limit   = (void *)0x7fffff0000;  /* top of the current working set */
+ #else
+ static void *address_space_limit = (void *)0xc0000000;
+ static void *user_space_limit    = (void *)0x7fff0000;
+diff -urN wine/loader/preloader.c b/loader/preloader.c
+--- wine/loader/preloader.c	2025-10-23 00:20:21.709222352 +0800
++++ b/loader/preloader.c	2025-10-23 18:24:32.057544786 +0800
+@@ -1449,7 +1449,7 @@
+         {
+             /* don't warn for low 64k */
+             if (preload_info[i].addr >= (void *)0x10000
+-#ifdef __aarch64__
++#ifdef 1
+                 && preload_info[i].addr < (void *)0x7fffffffff /* ARM64 address space might end here*/
+ #endif
+             )
