@@ -12,6 +12,15 @@
 
 ## Kron4ek版本补丁停止更新
 
+# 变量说明
+
+启用ESYNC ```WINEESYNC=1```
+
+启用FSYNC ```WINEFSYNC=1```
+
+ - wine**10.16-2** fsync 添加可配置的自旋计数——可能有助于性能，但也可能引入稳定性问题或挂起。尝试设置环境变量
+   ```WINEFSYNC_SPINCOUNT=100``` 
+
 ## RELEASES
 使用wine-tkg-git作为主要构建版本，从**wine10.14**开始，提供两种gstreamer解码来解决游戏解码问题
 
@@ -32,6 +41,7 @@ unityH264重置版本将不再包含winevulkan提速而是使用原版winevulkan
 
 常规重置版本继续正常mf解码修复补丁以及winevulkan支持
 
+从***10.16-2***开始，不再构建```wine64```这个二进制文件主要使用```wine```与wow64
 
 ## 关于补丁文件
 
