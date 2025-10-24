@@ -41,8 +41,6 @@ unityH264重置版本将不再包含winevulkan提速而是使用原版winevulkan
 
 常规重置版本继续正常mf解码修复补丁以及winevulkan支持
 
-从***10.16-2***开始，不再构建```wine64```这个二进制文件主要使用```wine```与wow64
-
 ## 关于补丁文件
 
 ### `wine_do_not_create_dxgi_manager.patch`

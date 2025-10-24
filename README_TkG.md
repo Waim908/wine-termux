@@ -2,8 +2,6 @@
 
 ### copy XXX.mylatepatch to ```wine-tkg-userpatches``` <= Use ```esync.mylatepatch``` or ```esync2.mylatepatch```
 
-### commit must ```https://github.com/Frogging-Family/wine-tkg-git/commit/64580ba53112039dfeb21d3378506388da33eb69``` 
-
 ### System: ```archlinux```
 
 ### customization.cfg
