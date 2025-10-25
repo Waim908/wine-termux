@@ -10,7 +10,9 @@
 
 # 这里按照wine本身的开源协议LGPL2.1为主
 
-## Kron4ek版本补丁停止更新
+## [wine-tkg-custom源码](https://github.com/Waim908/wine-tkg-custom)
+
+### Kron4ek版本补丁停止更新
 
 # 变量说明
 
