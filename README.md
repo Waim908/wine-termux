@@ -168,7 +168,7 @@ git clone https://github.com/Waim908/wine-termux.git
 
 3.  **配置编译选项**:
     ```bash
-    ./configure ${arg[@]} --prefix=/your/installation/path/
+    ./configure --enable-archs="i386,x86_64" ${arg[@]} --prefix=/your/installation/path/
     ```
     > **注意**: 如果配置过程中出现类似 `--without-piper` 参数不存在的警告，通常可以**忽略**，此选项不会影响非 Proton 版本 Wine 的构建。
 
