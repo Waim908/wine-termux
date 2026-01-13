@@ -39,7 +39,9 @@ wineVer-N
 
 N代表第N次编译
 
-wine-wineVer-N-tkg-stg-ge.tar.xz
+wine-wineVer-[mfdxgi]-N-tkg-stg-ge.tar.xz
+
+现在对于只应用wine_do_not_create_dxgi_device_manager.patch的版本，命名为,mfdxgi
 
 文件名过长的问题也进行解决,stg代表staging补丁已经应用
 
