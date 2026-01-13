@@ -14,6 +14,12 @@
 
 ### Kron4ek版本补丁停止更新
 
+# 由于社区进展缓慢，对于**10.17+**的版本不得不停止esync与fsync支持，wine现在已经可以在高版本内核上加载ntsync支持
+
+# 同时，对于**10.16+**的版本，不得不停止构建支持proton winevulkan与mf的移植支持
+
+# 对于proton 10-3进度放缓，因为去steam补丁进展缓慢
+
 # 变量说明
 
 启用ESYNC ```WINEESYNC=1```
