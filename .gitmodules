@@ -1,0 +1,3 @@
+[submodule "wine-patches"]
+	path = wine-patches
+	url = https://github.com/Waim908/wine-patches.git
