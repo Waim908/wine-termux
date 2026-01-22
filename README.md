@@ -8,7 +8,7 @@
 Wine_Builds 部分使用 MIT 协议。  
 此处以 Wine 本身的开源协议 LGPL 2.1 为主。
 
-~~[wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)~~<=弃用此仓库，源码请查看此仓库tag
+~~[wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)~~<=弃用此仓库（仅保留历史代码），源码请查看此仓库tag
 
 由于社区进展缓慢：
 
@@ -27,6 +27,14 @@ Wine_Builds 部分使用 MIT 协议。
   WINEFSYNC_SPINCOUNT=100
   ```
 
+# 推荐的版本
+
+proton 10-3
+
+wine 10.15-3
+
+由于虚拟内存补丁失误，如果遇到问题优先切换为推荐版本
+
 ## RELEASES
 
 # 命名规则V2
@@ -34,8 +42,11 @@ Wine_Builds 部分使用 MIT 协议。
 之前的版本号过长不方便管理，这里较新的Release将版本号正式修改为
 
 wineVer-N
+proton-Ver-X-N
 
 N代表第N次编译
+
+X为proton的版本例如10.0-3
 
 wine-wineVer-[mfdxgi]-N-tkg-stg-ge.tar.xz
 
