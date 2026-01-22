@@ -8,7 +8,7 @@
 Wine_Builds 部分使用 MIT 协议。  
 此处以 Wine 本身的开源协议 LGPL 2.1 为主。
 
-## [wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)
+~~[wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)~~<=弃用此仓库，源码请查看此仓库tag
 
 - Kron4ek 版本补丁已停止更新
 

@@ -1,8 +1,6 @@
-diff --git a/server/mapping.c b/server/mapping.c
-index a8593de..0ac45d0 100644
---- a/server/mapping.c
-+++ b/server/mapping.c
-@@ -264,7 +264,7 @@ void init_memory(void)
+--- proton-wine/server/mapping.c	2026-01-22 18:30:54.134574488 +0800
++++ b/server/mapping.c	2026-01-22 19:10:02.992600684 +0800
+@@ -269,7 +269,7 @@
  {
      page_mask = sysconf( _SC_PAGESIZE ) - 1;
      free_map_addr( 0x60000000, 0x1c000000 );
