@@ -1,0 +1,11 @@
+--- proton-wine/server/mapping.c	2026-01-22 18:30:54.134574488 +0800
++++ b/server/mapping.c	2026-01-22 19:10:02.992600684 +0800
+@@ -269,7 +269,7 @@
+ {
+     page_mask = sysconf( _SC_PAGESIZE ) - 1;
+     free_map_addr( 0x60000000, 0x1c000000 );
+-    free_map_addr( 0x600000000000, 0x100000000000 );
++    free_map_addr( 0x4000000000, 0x1000000000 );
+     if (page_mask != 0xfff)
+         fprintf( stderr, "wineserver: page size is %uk but Wine requires 4k pages, expect problems\n",
+                  (int)(page_mask + 1) / 1024 );
