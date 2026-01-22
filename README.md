@@ -10,8 +10,6 @@ Wine_Builds 部分使用 MIT 协议。
 
 ~~[wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)~~<=弃用此仓库，源码请查看此仓库tag
 
-- Kron4ek 版本补丁已停止更新
-
 由于社区进展缓慢：
 
 - 对于 **10.17+** 的版本，不得不停止 esync 与 fsync 支持。Wine 现已可在高版本内核上加载 ntsync 支持。
@@ -82,7 +80,7 @@ wine-wineVer-[mfdxgi]-N-tkg-stg-ge.tar.xz
 - `esync2.patch` 方案源自 [hostei33 的 wine-tkg glibc 分支仓库](https://github.com/hostei33/wine-tkg)。
 - **注意**：`esync.patch` 和 `esync2.patch` **只能二选一**应用。
 
-`ntsync-fix-32-bit-processes.patch` —— 来自 Kron4ek。尚不清楚此补丁是否有用，需视后续安卓版本内核是否支持 ntsync（10.16+）。
+~~`ntsync-fix-32-bit-processes.patch` —— 来自 Kron4ek。尚不清楚此补丁是否有用，需视后续安卓版本内核是否支持 ntsync（10.16+）。~~ <=不使用
 
 ## 关于 `wine-tkg-git`
 
