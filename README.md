@@ -48,9 +48,11 @@ N代表第N次编译
 
 X为proton的版本例如10.0-3
 
-wine-wineVer-[mfdxgi]-N-tkg-stg-ge.tar.xz
+wine-wineVer-[mfdxgi/mf]-N-tkg-stg-ge.tar.xz
 
 现在对于只应用wine_do_not_create_dxgi_device_manager.patch的版本，命名为,mfdxgi
+
+应用了wine vulkan与完整proton mf补丁的为mf
 
 文件名过长的问题也进行解决,stg代表staging补丁已经应用
 
