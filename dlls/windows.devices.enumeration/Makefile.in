@@ -1,0 +1,13 @@
+MODULE = windows.devices.enumeration.dll
+IMPORTS = cfgmgr32 combase uuid
+
+SOURCES = \
+	access.c \
+	async.c \
+	async_private.idl \
+	classes.idl \
+	event_handlers.c \
+	information.c \
+	main.c \
+	vector.c \
+	weakref.c

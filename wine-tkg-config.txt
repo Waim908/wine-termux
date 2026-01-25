@@ -1,0 +1,57 @@
+# Last wine-tkg-staging-fsync-git configuration - Sat Jan 24 17:14:27 CST 2026 :
+
+Local cfg files used
+
+Wine (plain) version: 10.15.r0.g72dc2afb1a7
+Using wine-staging patchset (version 10.15.r0.g978b387c)
+
+Re-enable esync patches since Staging impl is disabled.
+Not using vkd3d native library for d3d12 translation (allows using vkd3d-proton)
+
+Done applying backports hotfixes (if any) - list available in prepare.log
+Done applying reverting hotfixes (if any) - list available in prepare.log
+
+( Restore heap.h header file )
+
+CSMT-toggle.patch -- ( Applied CSMT toggle logic patch )
+
+Staging overrides, if any: 
+
+esync-unix-staging-a3cde522.patch -- ( Using Esync (unix, staging) patchset )
+fsync-unix-staging-03516422.patch -- ( Applied fsync patches (unix, staging) )
+fsync_futex_waitv.patch -- ( Applied patches for fsync to support futex_waitv )
+
+enable_dynamic_wow64_def.patch -- ( Enable WINEARCH=wow64 by default )
+LAA-unix-staging-wow64-8cba5b8e.patch -- ( Applied large address aware override support )
+
+msvcrt_nativebuiltin_mainline.patch -- ( Enforce msvcrt Dlls to native then builtin (from Proton) )
+josh-flat-theme.patch -- ( Add Josh's better-theme )
+proton-win10-default.patch -- ( Enforce win10 as default wine version )
+
+Applied hotfix Return_nt_filename_and_resolve_DOS_drive_path.mypatch
+Applied hotfix a608ef1.mypatch
+Applied hotfix nostale_mouse_fix.mypatch
+Applied hotfix HACK-user32-Always-call-get_message-request-after-waiting.mypatch
+Applied hotfix opencl-fixup.mypatch
+
+wine-tkg-staging.patch -- ( Please don't report bugs about this wine build on winehq.org and use https://github.com/Frogging-Family/wine-tkg-git/issues instead. )
+Applied your own patch esync2.mylatepatch
+Applied your own patch fsync.mylatepatch
+Applied your own patch path-patch-universal.mylatepatch
+Applied your own patch protonoverrides.mylatepatch
+Applied your own patch termux-wine-fix2.mylatepatch
+Applied your own patch wine_do_not_create_dxgi_device_manager2.mylatepatch
+Applied your own patch wine_virtual_memory2.mylatepatch
+
+
+With predefined optimizations:
+CFLAGS = -O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types
+LDFLAGS = -Wl,-O3,--sort-common,--as-needed
+CROSSCFLAGS = -O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types
+CROSSLDFLAGS = -Wl,-O3,--sort-common,--as-needed
+
+configure arguments: --disable-tests --without-vkd3d --without-wayland
+
+CC = ccache gcc
+CXX = ccache g++
+CROSSCC64 = ccache x86_64-w64-mingw32-gcc
