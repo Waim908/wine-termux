@@ -1,0 +1,51 @@
+# Last wine-tkg-staging-git configuration - Sun Feb  8 15:57:37 CST 2026 :
+
+Local cfg files used
+
+Wine (plain) version: 11.2.r0.g87ba10bb3aa
+Using wine-staging patchset (version 11.2.r0.g497d4578)
+
+Not using vkd3d native library for d3d12 translation (allows using vkd3d-proton)
+
+Done applying backports hotfixes (if any) - list available in prepare.log
+Done applying reverting hotfixes (if any) - list available in prepare.log
+
+2941e58d7d6e630e88b6e9539414f1d86736c7aa reverted 
+( Restore heap.h header file )
+
+CSMT-toggle.patch -- ( Applied CSMT toggle logic patch )
+
+Staging overrides, if any: 
+
+
+enable_dynamic_wow64_def.patch -- ( Enable WINEARCH=wow64 by default )
+LAA-unix-staging-wow64.patch -- ( Applied large address aware override support )
+
+msvcrt_nativebuiltin_mainline.patch -- ( Enforce msvcrt Dlls to native then builtin (from Proton) )
+josh-flat-theme.patch -- ( Add Josh's better-theme )
+proton-win10-default.patch -- ( Enforce win10 as default wine version )
+
+Applied hotfix Return_nt_filename_and_resolve_DOS_drive_path.mypatch
+Applied hotfix a608ef1.mypatch
+Applied hotfix nostale_mouse_fix.mypatch
+Applied hotfix opencl-fixup.mypatch
+
+wine-tkg-staging.patch -- ( Please don't report bugs about this wine build on winehq.org and use https://github.com/Frogging-Family/wine-tkg-git/issues instead. )
+Applied your own patch path-patch-universal.mylatepatch
+Applied your own patch protonoverride2_10.16+.mylatepatch
+Applied your own patch termux-wine-fix2.mylatepatch
+Applied your own patch wine_do_not_create_dxgi_device_manager2.mylatepatch
+Applied your own patch wine_virtual_memory2.mylatepatch
+
+
+With predefined optimizations:
+CFLAGS = -O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types
+LDFLAGS = -Wl,-O3,--sort-common,--as-needed
+CROSSCFLAGS = -O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types
+CROSSLDFLAGS = -Wl,-O3,--sort-common,--as-needed
+
+configure arguments: --disable-tests --without-vkd3d --without-wayland
+
+CC = ccache gcc
+CXX = ccache g++
+CROSSCC64 = ccache x86_64-w64-mingw32-gcc
