@@ -209,3 +209,5 @@ git clone https://github.com/Waim908/wine-termux.git
 - [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
 - [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
 - [Kron4ek/Wine-Builds](https://github.com/Kron4ek/Wine-Builds)
+-
+[ValveSoftware/wine](https://github.com/ValveSoftware/wine)
