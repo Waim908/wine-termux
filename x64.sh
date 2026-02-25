@@ -7,13 +7,13 @@ else
 fi
 
 # Custom GCC flags（基础 + 激进优化）
-_GCC_FLAGS="-O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -flto -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types"
-# Custom LD flags（带 LTO 与 strip）
-_LD_FLAGS="-Wl,-O1,-s,--sort-common,--as-needed,-flto"
+_GCC_FLAGS="-O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types"
+# Custom LD flags（带 strip）
+_LD_FLAGS="-Wl,-O1,-s,--sort-common,--as-needed"
 # Cross-compiled GCC flags（与本机保持一致）
-_CROSS_FLAGS="-O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -flto -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types"
+_CROSS_FLAGS="-O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types"
 # Cross-compiled LD flags
-_CROSS_LD_FLAGS="-Wl,-O1,-s,--sort-common,--as-needed,-flto"
+_CROSS_LD_FLAGS="-Wl,-O1,-s,--sort-common,--as-needed"
 
 # 本机与交叉编译统一加上 -march=x86-64
 export CFLAGS="-march=x86-64 ${_GCC_FLAGS}"
