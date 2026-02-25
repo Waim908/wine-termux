@@ -135,7 +135,7 @@ jobs:
           source /tmp/wine-termux/x64.sh
           bash /tmp/wine-termux/patch.sh proton ${{ steps.wine_tag.outputs.version }} || exit 1
           ./autogen.sh || exit 1
-          ./configure ${arg[@]} --prefix=/tmp/${{ steps.wine_tag.outputs.wine_tag }} || exit 1
+          ./configure \${arg[@]} --prefix=/tmp/${{ steps.wine_tag.outputs.wine_tag }} || exit 1
           make -j$(nproc) || exit 1
           make install || exit 1
           cd /tmp
