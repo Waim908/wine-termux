@@ -121,7 +121,7 @@ jobs:
 
           sudo tar xf wine-bcc.tar.xz || exit 1
           sudo mv $GITHUB_WORKSPACE/wine-src archlinux/tmp/
-          sudo cp -r -p $GITHUB_WORKSPACE/ archlinux/tmp/wine-termux
+          sudo cp -r -p $GITHUB_WORKSPACE/ archlinux/tmp/
 
           # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
           sudo mkdir -p archlinux/root/.cache/ccache
@@ -154,9 +154,15 @@ jobs:
         run: |
           cd /tmp
           bash $GITHUB_WORKSPACE/mount.sh archlinux mount
-          sudo chroot archlinux /bin/build-wine.sh
+          sudo chroot archlinux bash -x "/bin/build-wine.sh"
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
           [[ -d /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }} ]] || exit 1
+
+          - name: Upload Cache
+          uses: actions/cache@v4
+          with:
+            path: /tmp/archlinux/root/.cache/ccache
+            key: proton-wine-ccache-${{ runner.os }}-x86_64
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
