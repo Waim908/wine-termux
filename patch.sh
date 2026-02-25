@@ -3,7 +3,7 @@ apply_patch() {
   if [[ -d $script_dir/$1/$2 ]]; then
     . $script_dir/$1/$2/___patch___.conf $3
     echo "${patchFileArry[@]}"
-    [[ -z ${patchFileArry[@]} ]] || exit 1
+    [[ ! -z ${patchFileArry[@]} ]] || exit 1
     for i in "${patchFileArry[@]}"; do
       [[ -f $script_dir/$1/$2/$i ]] || exit 1
       echo "Apply $1/$2/$i"

@@ -107,9 +107,9 @@ jobs:
 
           cat > ~/.gitconfig << EOF
           [fetch]
-            parallel = $(nproc)
+            parallel = `nproc`
           [submodule]
-            fetchJobs = $(nproc)
+            fetchJobs = `nproc`
           EOF
 
           git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/ValveSoftware/wine.git wine-src
