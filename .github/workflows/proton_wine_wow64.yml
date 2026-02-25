@@ -105,9 +105,17 @@ jobs:
           echo "Detected new Proton release: ${{ steps.proton.outputs.tag }}"
           echo "Using Wine tag: ${{ steps.wine_tag.outputs.wine_tag }}"
 
+          cat > ~/.gitconfig << EOF
+          [fetch]
+            parallel = $(nproc)
+          [submodule]
+            fetchJobs = $(nproc)
+          EOF
+
           git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/ValveSoftware/wine.git wine-src
           cd /tmp
-          apt install aria2 -y
+
+          sudo apt install aria2 -y
 
           aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/wine-bcc-latest/wine-bcc.tar.xz
 
