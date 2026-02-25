@@ -1,7 +1,7 @@
 export script_dir="$(dirname $(readlink -f "$0"))"
 apply_patch() {
   if [[ -d $script_dir/$1/$2 ]]; then
-    . $script_dir/$1/$2/___patch___.conf $2
+    . $script_dir/$1/$2/___patch___.conf $3
     for i in "${patchFileArry[@]}"; do
       echo "Apply $1/$2/$i"
       if ! patch -p1 < $script_dir/$1/$2/$i; then
