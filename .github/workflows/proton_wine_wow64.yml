@@ -159,11 +159,11 @@ jobs:
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
           [[ -d /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }} ]] || exit 1
 
-          - name: Upload Cache
-          uses: actions/cache@v4
-          with:
-            path: /tmp/archlinux/root/.cache/ccache
-            key: proton-wine-ccache-${{ runner.os }}-x86_64
+      - name: Upload Cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/archlinux/root/.cache/ccache
+          key: proton-wine-ccache-${{ runner.os }}-x86_64
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
