@@ -99,7 +99,7 @@ jobs:
           echo "wine_tag=$wine_tag"       >> "$GITHUB_OUTPUT"
 
       # 只有检测到新 release（或手动触发）才执行你的脚本
-      - name: Run build script on new Proton release
+      - name: Clone project on new Proton release
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           echo "Detected new Proton release: ${{ steps.proton.outputs.tag }}"
@@ -129,6 +129,7 @@ jobs:
 
           cat > build-wine.sh << EOF
           #!/bin/bash
+          [[ -d /tmp/wine-termux ]] || exit 1
           cd /tmp/wine-src
           export USE_CACHE=1
           source /tmp/wine-termux/x64.sh
