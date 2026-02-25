@@ -1,0 +1,172 @@
+name: Compile Proton Wine wow64 (auto on Proton release)
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  # 手动触发保留，并允许自定义 Proton tag
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Proton release tag（可选，例如：proton-10.0-4，不填则使用最新 release）'
+        required: false
+        type: string
+
+  # 定时检查 Proton 仓库的最新 release
+  schedule:
+    - cron: '0 0 * * *'   # 每日 00:00 检查一次（UTC 时间）
+
+jobs:
+  BCC:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 使用 cache 保存上一次看到的 tag
+      - name: Restore last Proton release tag from cache
+        id: cache-tag
+        uses: actions/cache@v4
+        with:
+          path: .proton_last_tag
+          key: proton-last-tag
+
+      - name: Get latest Proton release tag
+        id: proton
+        env:
+          CUSTOM_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          if [ -n "$CUSTOM_TAG" ]; then
+            echo "Use custom tag from manual dispatch: $CUSTOM_TAG"
+            latest_tag="$CUSTOM_TAG"
+          else
+            latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/Proton/releases/latest | jq -r .tag_name)
+          fi
+          echo "Latest Proton tag: $latest_tag"
+          echo "$latest_tag" > .proton_current_tag
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Read last saved tag (if any)
+        id: last
+        run: |
+          if [ -f .proton_last_tag ]; then
+            last_tag=$(cat .proton_last_tag)
+          else
+            last_tag=""
+          fi
+          echo "Last Proton tag: $last_tag"
+          echo "tag=$last_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Compare tags and decide whether to run build
+        id: need_build
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            # 手动触发时无论是否与上次相同 tag 都执行
+            echo "Manual dispatch, force build."
+            echo "new_release=true" >> "$GITHUB_OUTPUT"
+          else
+            if [ "${{ steps.proton.outputs.tag }}" != "${{ steps.last.outputs.tag }}" ]; then
+              echo "new_release=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "new_release=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Convert Proton tag to Wine tag
+        id: wine_tag
+        if: steps.need_build.outputs.new_release == 'true'
+        run: |
+          proton_tag="${{ steps.proton.outputs.tag }}"
+          # proton_tag 示例：proton-10.0-4
+          proton_rel="${proton_tag#proton-}"   # 10.0-4
+          version="${proton_rel%-*}"          # 10.0
+          wine_tag="proton-wine-${proton_rel}" # proton-wine-10.0-4
+
+          echo "Proton tag: $proton_tag"
+          echo "Proton release: $proton_rel"
+          echo "Wine tag: $wine_tag"
+          echo "Version (major.minor): $version"
+
+          echo "proton_tag=$proton_tag"   >> "$GITHUB_OUTPUT"
+          echo "proton_rel=$proton_rel"   >> "$GITHUB_OUTPUT"
+          echo "version=$version"         >> "$GITHUB_OUTPUT"
+          echo "wine_tag=$wine_tag"       >> "$GITHUB_OUTPUT"
+
+      # 只有检测到新 release（或手动触发）才执行你的脚本
+      - name: Run build script on new Proton release
+        if: steps.need_build.outputs.new_release == 'true'
+        run: |
+          echo "Detected new Proton release: ${{ steps.proton.outputs.tag }}"
+          echo "Using Wine tag: ${{ steps.wine_tag.outputs.tag }}"
+          git clone -b "${{ steps.wine_tag.outputs.tag }}" https://github.com/ValveSoftware/wine.git wine-src
+          cd /tmp
+          wget https://github.com/Waim908/BCC/releases/download/wine-bcc-latest/wine-bcc.tar.xz
+          sudo tar xf wine-bcc.tar.xz || exit 1
+          sudo mv $GITHUB_WORKSPACE/wine-src archlinux/tmp/
+          sudo cp -r -p $GITHUB_WORKSPACE/wine-termux archlinux/tmp/
+
+          # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
+          sudo mkdir -p archlinux/root/.cache/ccache
+          sudo chmod -R 777 archlinux/root/.cache
+
+          cat > build-wine.sh << EOF
+          #!/bin/bash
+          export USE_CACHE=1
+          source /tmp/wine-termux/x64.sh
+          bash /tmp/wine-termux/patch.sh proton ${{ steps.wine_tag.outputs.version }} || exit 1
+          ./autogen.sh || exit 1
+          ./configure ${arg[@]} --prefix=/tmp/${{ steps.wine_tag.outputs.wine_tag }} || exit 1
+          make -j$(nproc) || exit 1
+          make install || exit 1
+          cd /tmp
+          tar -I 'xz -T$(nproc)' -cf ${{ steps.wine_tag.outputs.wine_tag }}.tar.xz ${{ steps.wine_tag.outputs.wine_tag }}/
+          EOF
+
+          sudo chmod 777 build-wine.sh
+          sudo cp -r -p build-wine.sh archlinux/bin/
+
+      - name: Cache ccache directory in rootfs
+        uses: actions/cache@v4
+        with:
+          path: /tmp/archlinux/root/.cache/ccache
+          key: proton-wine-ccache-${{ runner.os }}-x86_64
+
+      - name: Compile Use BCC
+        run: |
+          cd /tmp
+          bash $GITHUB_WORKSPACE/wine-termux/mount.sh archlinux mount
+          sudo chroot archlinux /bin/build-wine.sh
+          bash $GITHUB_WORKSPACE/wine-termux/mount.sh archlinux unmount
+          [[ -d /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }} ]] || exit 1
+
+      - name: Create GitHub Release
+        if: steps.need_build.outputs.new_release == 'true'
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.wine_tag.outputs.wine_tag }}          # 例如：proton-wine-10.0-4
+          name: Proton Wine ${{ steps.wine_tag.outputs.proton_rel }} # 例如：Proton Wine 10.0-4
+          body: |
+            源码修改查看此仓库补丁，这是非TkG版本的原版proton wine编译。
+          files: /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }}.tar.xz
+
+      # 更新缓存里的 last_tag（保持和 latest 对齐）
+      - name: Save current tag to cache file
+        if: steps.need_build.outputs.new_release == 'true'
+        run: |
+          cp .proton_current_tag .proton_last_tag
+
+      - name: Update cache with new tag
+        if: steps.need_build.outputs.new_release == 'true'
+        uses: actions/cache@v4
+        with:
+          path: .proton_last_tag
+          key: proton-last-tag
+

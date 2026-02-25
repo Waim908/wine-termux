@@ -4,8 +4,8 @@
 
 ---
 
-本项目基于 [LGPL 2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html) 协议开源。  
-Wine_Builds 部分使用 MIT 协议。  
+本项目基于 [LGPL 2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html) 协议开源。
+Wine_Builds 部分使用 MIT 协议。
 此处以 Wine 本身的开源协议 LGPL 2.1 为主。
 
 ~~[wine-tkg-custom 源码](https://github.com/Waim908/wine-tkg-custom-termux)~~<=弃用此仓库（仅保留历史代码），源码请查看此仓库tag
@@ -19,7 +19,7 @@ Wine_Builds 部分使用 MIT 协议。
 
 ### 变量说明
 
-启用 ESYNC：`WINEESYNC=1`  
+启用 ESYNC：`WINEESYNC=1`
 启用 FSYNC：`WINEFSYNC=1`
 
 - Wine **10.16-2** 的 fsync 添加了可配置的自旋计数，可能有助于性能，但也可能引入稳定性问题或挂起。可尝试设置环境变量：
@@ -32,6 +32,8 @@ Wine_Builds 部分使用 MIT 协议。
 proton 10-3
 
 wine 10.15（已重置，虚拟内存修复）
+
+wine 11.2
 
 由于虚拟内存补丁失误，如果遇到问题优先切换为推荐版本
 
@@ -134,10 +136,10 @@ cp /lib/对应架构-linux/gstreamer-1.0/include/gst/gl/gstglconfig.h /usr/inclu
 
 ## Q/A 常见问题
 
-**Q: 使用 `patch -p1` 命令应用补丁时显示失败 (failed) 怎么办？**  
+**Q: 使用 `patch -p1` 命令应用补丁时显示失败 (failed) 怎么办？**
 **A:** 可尝试添加 `-R` 参数进行反向操作以检查冲突：`patch -p1 -R`。如果提示，输入 `y` 尝试应用反向补丁。这有助于诊断问题，但**并非**解决方案。
 
-**Q: 有没有更保险的 `patch` 命令参数？**  
+**Q: 有没有更保险的 `patch` 命令参数？**
 **A:** 有：
 - 使用 `--dry-run` 参数进行试运行，不实际修改文件：`patch -p1 --dry-run < patchfile.patch`
 - 使用 `-N` 参数跳过已应用的补丁：`patch -Np1 < patchfile.patch`
@@ -174,14 +176,14 @@ git clone https://github.com/Waim908/wine-termux.git
 
 ## 构建指南
 
-1. **应用补丁**  
+1. **应用补丁**
    进入你的 Wine 源码目录，运行以下命令来应用所需补丁（请替换 `/path/to/version/` 和 `XXX.patch` 为实际路径和补丁名）：
    ```bash
    cd /path/to/your/wine/source
    patch -p1 < /path/to/wine-termux/对应版本的文件夹/XXX.patch
    ```
 
-2. **设置编译环境**  
+2. **设置编译环境**
    使用 `source` 或 `.` 命令执行提供的环境变量脚本：
    ```bash
    . /path-to/wine-termux/x64.sh
@@ -209,3 +211,4 @@ git clone https://github.com/Waim908/wine-termux.git
 - [Frogging-Family/wine-tkg-git](https://github.com/Frogging-Family/wine-tkg-git)
 - [hostei33/wine-tkg](https://github.com/hostei33/wine-tkg)
 - [Kron4ek/Wine-Builds](https://github.com/Kron4ek/Wine-Builds)
+- [ValveSoftware/wine](https://github.com/ValveSoftware/wine)
