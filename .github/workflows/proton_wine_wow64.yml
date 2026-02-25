@@ -103,8 +103,8 @@ jobs:
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           echo "Detected new Proton release: ${{ steps.proton.outputs.tag }}"
-          echo "Using Wine tag: ${{ steps.wine_tag.outputs.tag }}"
-          git clone -b "${{ steps.wine_tag.outputs.tag }}" https://github.com/ValveSoftware/wine.git wine-src
+          echo "Using Wine tag: ${{ steps.wine_tag.outputs.wine_tag }}"
+          git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/ValveSoftware/wine.git wine-src
           cd /tmp
           wget https://github.com/Waim908/BCC/releases/download/wine-bcc-latest/wine-bcc.tar.xz
           sudo tar xf wine-bcc.tar.xz || exit 1
