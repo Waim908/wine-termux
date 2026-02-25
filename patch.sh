@@ -13,4 +13,4 @@ apply_patch() {
     echo "No Version Patch files=>$1/$2"
   fi
 }
-apply_patch $1 $2 || exit 1
+apply_patch $1 $2 $3 || exit 1
