@@ -146,12 +146,14 @@ jobs:
           sudo cp -r -p build-wine.sh archlinux/bin/
 
       - name: Cache ccache directory in rootfs
+        if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache@v4
         with:
           path: /tmp/archlinux/root/.cache/ccache
           key: proton-wine-ccache-${{ runner.os }}-x86_64
 
       - name: Compile Use BCC
+        if: steps.need_build.outputs.new_release == 'true'
         run: |
           cd /tmp
           bash $GITHUB_WORKSPACE/mount.sh archlinux mount
@@ -160,6 +162,7 @@ jobs:
           [[ -d /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }} ]] || exit 1
 
       - name: Upload Cache
+        if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache@v4
         with:
           path: /tmp/archlinux/root/.cache/ccache
