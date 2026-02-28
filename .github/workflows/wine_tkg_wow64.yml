@@ -1,4 +1,4 @@
-name: Compile Proton Wine wow64 (auto on Proton release)
+name: Compile Wine TkG wow64 (auto)
 
 permissions:
   contents: write
@@ -9,13 +9,22 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Proton release tag（可选，例如：proton-10.0-4，不填则使用最新 release）'
+        description: 'Wine release tag（可选，例如：wine-9.22，不填则使用最新tag）'
         required: false
         type: string
+      tkg:
+        description: 'Wine TkG仓库分支'
+        required: false
+        type: string
+      enable_mf:
+        description: '启用 Proton MF 解码'
+        required: false
+        type: boolean
+        default: false
 
   # 定时检查 Proton 仓库的最新 release
   schedule:
-    - cron: '0 0 * * *'   # 每日 00:00 检查一次（UTC 时间）
+    - cron: '0 1 * * *'   # 每日 01:00 检查一次（UTC 时间）
 
 jobs:
   BCC:
@@ -28,37 +37,41 @@ jobs:
           fetch-depth: 0
 
       # 使用 cache 保存上一次看到的 tag
-      - name: Restore last Proton release tag from cache
+      - name: Restore last wine release tag from cache
         id: cache-tag
         uses: actions/cache@v4
         with:
-          path: .proton_last_tag
-          key: proton-last-tag
+          path: .wine_last_tag
+          key: wine-last-tag
 
-      - name: Get latest Proton release tag
-        id: proton
+      - name: Get latest wine tag
+        id: wine-mirror
         env:
           CUSTOM_TAG: ${{ github.event.inputs.tag }}
+          TKG_VER: ${{ github.event.inputs.tkg }}
+          ENABLE_MF: ${{ github.event.inputs.enable_mf }}
         run: |
           if [ -n "$CUSTOM_TAG" ]; then
             echo "Use custom tag from manual dispatch: $CUSTOM_TAG"
             latest_tag="$CUSTOM_TAG"
           else
-            latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/Proton/releases/latest | jq -r .tag_name)
+            # https://github.com/wine-mirror/wine
+            latest_tag=$(curl -s https://api.github.com/repos/wine-mirror/wine/releases/latest | jq -r .tag_name)
           fi
-          echo "Latest Proton tag: $latest_tag"
-          echo "$latest_tag" > .proton_current_tag
+          echo "Latest Wine tag: $latest_tag"
+          echo "$latest_tag" > .wine_current_tag
           echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+          echo "enable_mf=$ENABLE_MF" >> "$GITHUB_OUTPUT"
 
       - name: Read last saved tag (if any)
         id: last
         run: |
-          if [ -f .proton_last_tag ]; then
-            last_tag=$(cat .proton_last_tag)
+          if [ -f .wine_last_tag ]; then
+            last_tag=$(cat .wine_last_tag)
           else
             last_tag=""
           fi
-          echo "Last Proton tag: $last_tag"
+          echo "Last Wine tag: $last_tag"
           echo "tag=$last_tag" >> "$GITHUB_OUTPUT"
 
       - name: Compare tags and decide whether to run build
@@ -71,7 +84,7 @@ jobs:
             echo "Manual dispatch, force build."
             echo "new_release=true" >> "$GITHUB_OUTPUT"
           else
-            if [ "${{ steps.proton.outputs.tag }}" != "${{ steps.last.outputs.tag }}" ]; then
+            if [ "${{ steps.wine-mirror.outputs.tag }}" != "${{ steps.last.outputs.tag }}" ]; then
               echo "new_release=true" >> "$GITHUB_OUTPUT"
             else
               echo "new_release=false" >> "$GITHUB_OUTPUT"
@@ -82,27 +95,20 @@ jobs:
         id: wine_tag
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          proton_tag="${{ steps.proton.outputs.tag }}"
-          # proton_tag 示例：proton-10.0-4
-          proton_rel="${proton_tag#proton-}"   # 10.0-4
-          version="${proton_rel%-*}"          # 10.0
-          wine_tag="proton-wine-${proton_rel}" # proton-wine-10.0-4
-
-          echo "Proton tag: $proton_tag"
-          echo "Proton release: $proton_rel"
-          echo "Wine tag: $wine_tag"
-          echo "Version (major.minor): $version"
-
-          echo "proton_tag=$proton_tag"   >> "$GITHUB_OUTPUT"
-          echo "proton_rel=$proton_rel"   >> "$GITHUB_OUTPUT"
-          echo "version=$version"         >> "$GITHUB_OUTPUT"
-          echo "wine_tag=$wine_tag"       >> "$GITHUB_OUTPUT"
+          if [[ ${{ github.event.inputs.enable_mf == true }} ]]; then
+            echo "PKG_NAME=mf" >> $GITHUB_OUTPUT
+          else
+            echo "PKG_NAME=mfdxgi" >> $GITHUB_OUTPUT
+          fi
+          wine_tag=${{ steps.wine-mirror.outputs.tag }} # wine-10.0
+          echo "wine_tag=${{ steps.wine-mirror.outputs.tag }}" >> $GITHUB_OUTPUT
+          wine_ver="${wine_tag#wine-}"   # 10.0
+          echo="wine_ver=$wine_ver" >> $GITHUB_OUTPUT
 
       # 只有检测到新 release（或手动触发）才执行你的脚本
       - name: Clone project on new Proton release
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          echo "Detected new Proton release: ${{ steps.proton.outputs.tag }}"
           echo "Using Wine tag: ${{ steps.wine_tag.outputs.wine_tag }}"
 
           cat > ~/.gitconfig << EOF
@@ -112,13 +118,19 @@ jobs:
             fetchJobs = `nproc`
           EOF
 
-          git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/ValveSoftware/wine.git wine-src
+          # git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/wine-mirror/wine wine-src
+          if [[ -z $TKG_VER ]]; then
+            git clone https://github.com/Frogging-Family/wine-tkg-git.git
+          else
+            git clone -b $TKG_VER https://github.com/Frogging-Family/wine-tkg-git.git
+          fi
           cd /tmp
 
           aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/wine-bcc-latest/wine-bcc.tar.xz
 
           sudo tar xf wine-bcc.tar.xz || exit 1
-          sudo mv $GITHUB_WORKSPACE/wine-src archlinux/tmp/
+          # sudo mv $GITHUB_WORKSPACE/wine-src archlinux/tmp/
+          sudo mv $GITHUB_WORKSPACE/wine-tkg-git archlinux/tmp/
           sudo cp -r -p $GITHUB_WORKSPACE/ archlinux/tmp/
 
           # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
@@ -128,16 +140,22 @@ jobs:
           cat > build-wine.sh << EOF
           #!/bin/bash
           [[ -d /tmp/wine-termux ]] || exit 1
-          cd /tmp/wine-src
           export USE_CACHE=1
-          source /tmp/wine-termux/x64.sh
-          bash -x /tmp/wine-termux/patch.sh proton ${{ steps.wine_tag.outputs.version }} ${{ steps.wine_tag.outputs.wine_tag }} || exit 1
-          ./autogen.sh || exit 1
-          ./configure \${arg[@]} --prefix=/tmp/${{ steps.wine_tag.outputs.wine_tag }} || exit 1
-          make -j$(nproc) || exit 1
-          make install || exit 1
+          export ENABLE_PROTON_MF=${{ github.event.inputs.enable_mf }}
+
+          cd /tmp/wine-tkg-git/wine-tkg-git/
+          bash -x /tmp/wine-termux/patch.sh wine-tkg-auto ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
+          bash -x /tmp/wine-termux/set-tkg-cfg.sh ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git
+
+          yes | ./non-makepkg-build.sh || exit 1
           cd /tmp
-          tar -I 'xz -T$(nproc)' -cf ${{ steps.wine_tag.outputs.wine_tag }}.tar.xz ${{ steps.wine_tag.outputs.wine_tag }}/
+
+          output="$(ls /tmp/output/*/ 2>/dev/null)"
+          [[ -z $output ]] || exit 1
+
+          cd /tmp/output/
+
+          tar -I 'xz -T$(nproc)' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
           EOF
 
           sudo chmod 777 build-wine.sh
@@ -148,7 +166,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/archlinux/root/.cache/ccache
-          key: proton-wine-ccache-${{ runner.os }}-x86_64
+          key: wine-tkg-ccache-${{ runner.os }}-x86_64
 
       - name: Compile Use BCC
         if: steps.need_build.outputs.new_release == 'true'
@@ -157,7 +175,30 @@ jobs:
           bash $GITHUB_WORKSPACE/mount.sh archlinux mount
           sudo chroot archlinux bash -x "/bin/build-wine.sh"
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
-          [[ -d /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }} ]] || exit 1
+
+      - name: Upload Source
+        if: steps.need_build.outputs.new_release == 'true'
+        run: |
+          cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
+          cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
+          rm -rf .git
+
+          git init
+          git checkout -b ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          git commit -m "Upload ${{ steps.wine_tag.outputs.wine_tag }}"
+
+          git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
+
+          git push -u origin main --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: Upload Cache
         if: steps.need_build.outputs.new_release == 'true'
@@ -172,11 +213,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.wine_tag.outputs.wine_tag }}          # 例如：proton-wine-10.0-4
-          name: Proton Wine ${{ steps.wine_tag.outputs.proton_rel }} # 例如：Proton Wine 10.0-4
+          tag_name: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          name: Wine TkG Stg GE ${{ steps.wine_tag.outputs.proton_rel }} # 例如：Proton Wine 10.0-4
           body: |
-            源码修改查看此仓库补丁，这是非TkG版本的原版proton wine编译。
-          files: /tmp/archlinux/tmp/${{ steps.wine_tag.outputs.wine_tag }}.tar.xz
+            源码修改查看此仓库补丁。
+          files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
 
       # 更新缓存里的 last_tag（保持和 latest 对齐）
       - name: Save current tag to cache file
@@ -190,4 +231,3 @@ jobs:
         with:
           path: .proton_last_tag
           key: proton-last-tag
-
