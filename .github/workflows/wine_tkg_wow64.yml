@@ -5,26 +5,23 @@ permissions:
   packages: write
 
 on:
-  # 手动触发保留，并允许自定义 Proton tag
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Wine release tag（可选，例如：wine-9.22，不填则使用最新tag）'
+        description: "Wine release tag（可选，例如：wine-9.22，不填则使用最新tag）"
         required: false
         type: string
       tkg:
-        description: 'Wine TkG仓库分支'
+        description: "Wine TkG仓库分支"
         required: false
         type: string
       enable_mf:
-        description: '启用 Proton MF 解码'
+        description: "启用 Proton MF 解码"
         required: false
         type: boolean
         default: false
-
-  # 定时检查 Proton 仓库的最新 release
   schedule:
-    - cron: '0 1 * * *'   # 每日 01:00 检查一次（UTC 时间）
+    - cron: "0 1 * * *" # 每日 01:00 检查一次（UTC 时间）
 
 jobs:
   BCC:
@@ -91,7 +88,7 @@ jobs:
             fi
           fi
 
-      - name: Convert Proton tag to Wine tag
+      - name: Get Wine tag
         id: wine_tag
         if: steps.need_build.outputs.new_release == 'true'
         run: |
@@ -106,7 +103,7 @@ jobs:
           echo="wine_ver=$wine_ver" >> $GITHUB_OUTPUT
 
       # 只有检测到新 release（或手动触发）才执行你的脚本
-      - name: Clone project on new Proton release
+      - name: Clone project
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           echo "Using Wine tag: ${{ steps.wine_tag.outputs.wine_tag }}"
@@ -199,13 +196,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
       - name: Upload Cache
         if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache@v4
         with:
           path: /tmp/archlinux/root/.cache/ccache
-          key: proton-wine-ccache-${{ runner.os }}-x86_64
+          key: wine-tkg-ccache-${{ runner.os }}-x86_64
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
@@ -214,7 +210,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
-          name: Wine TkG Stg GE ${{ steps.wine_tag.outputs.proton_rel }} # 例如：Proton Wine 10.0-4
+          name: Wine TkG Stg GE ${{ steps.wine_tag.outputs.wine_tag }} # 例如：Proton Wine 10.0-4
           body: |
             源码修改查看此仓库补丁。
           files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
@@ -223,11 +219,11 @@ jobs:
       - name: Save current tag to cache file
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          cp .proton_current_tag .proton_last_tag
+          cp .wine_current_tag .wine_last_tag
 
       - name: Update cache with new tag
         if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache@v4
         with:
-          path: .proton_last_tag
-          key: proton-last-tag
+          path: .wine_last_tag
+          key: wine-last-tag
