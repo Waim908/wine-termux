@@ -53,8 +53,9 @@ jobs:
             latest_tag="$CUSTOM_TAG"
           else
             # https://github.com/wine-mirror/wine
-            latest_tag=$(curl -s https://api.github.com/repos/wine-mirror/wine/releases/latest | jq -r .tag_name)
+            latest_tag=$(git ls-remote --tags https://github.com/wine-mirror/wine.git | grep -Ev '\^\{\}$' | sed 's/.*\///' | grep -E '^wine-[0-9]+\.[0-9]+.*$' | sort -V | tail -n 1)
           fi
+          [[ -z "$lastest_tag" ]] || exit 1
           echo "Latest Wine tag: $latest_tag"
           echo "$latest_tag" > .wine_current_tag
           echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
@@ -142,8 +143,8 @@ jobs:
 
           cd /tmp/wine-tkg-git/wine-tkg-git/
           bash -x /tmp/wine-termux/patch.sh wine-tkg-auto ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
-          bash -x /tmp/wine-termux/set-tkg-cfg.sh ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git
-
+          bash -x /tmp/wine-termux/set-tkg-cfg.sh ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git || exit 1
+          echo '_ci_build="true"' >> customization.cfg
           yes | ./non-makepkg-build.sh || exit 1
           cd /tmp
 
