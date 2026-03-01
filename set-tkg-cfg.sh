@@ -5,7 +5,7 @@ sed2() {
   local value="$2"
 
   if [[ -f "$file" ]]; then
-    sed -i "s/^${key}=\"[^\"]*\"/${key}=\"${value}\"/" "$file" || exit 1
+    sed -i "s|^${key}=\"[^\"]*\"|${key}=\"${value}\"|" "$file" || exit 1
   else
     echo "File not found: $file"
     return 1
