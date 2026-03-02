@@ -57,7 +57,7 @@ sed2 _proton_fs_hack true
 sed2 _msvcrt_nativebuiltin true
 sed2 _win10_default true
 sed2 _community_patches_auto_update true
-sed2 _nomakepkg_prefix_path /tmp/output/
+sed2 _nomakepkg_prefix_path /tmp/output
 
 file_path2="$file_path/wine-tkg-profiles/advanced-customization.cfg"
 sed2 _GCC_FLAGS "-O3 -pipe -msse3 -mfpmath=sse -ftree-vectorize -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types"

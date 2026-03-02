@@ -146,11 +146,6 @@ jobs:
           bash -x /tmp/wine-termux/set-tkg-cfg.sh ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git || exit 1
           echo '_ci_build="true"' >> customization.cfg
           yes | ./non-makepkg-build.sh || exit 1
-          cd /tmp
-
-          output="$(ls /tmp/output/*/ 2>/dev/null)"
-          [[ -z $output ]] || exit 1
-
           cd /tmp/output/
 
           tar -I 'xz -T$(nproc)' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
