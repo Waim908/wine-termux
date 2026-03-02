@@ -93,7 +93,7 @@ jobs:
         id: wine_tag
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          if [[ ${{ github.event.inputs.enable_mf == true }} ]]; then
+          if [[ ${{ github.event.inputs.enable_mf }} == true ]]; then
             echo "PKG_NAME=mf" >> $GITHUB_OUTPUT
           else
             echo "PKG_NAME=mfdxgi" >> $GITHUB_OUTPUT
@@ -148,7 +148,7 @@ jobs:
           yes | ./non-makepkg-build.sh || exit 1
           cd /tmp/output/
 
-          tar -I 'xz -T$(nproc)' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
+          tar -I 'xz -T$(nproc)' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
           EOF
 
           sudo chmod 777 build-wine.sh
@@ -169,6 +169,13 @@ jobs:
           sudo chroot archlinux bash -x "/bin/build-wine.sh"
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
 
+      - name: Upload Cache
+        if: steps.need_build.outputs.new_release == 'true'
+        uses: actions/cache@v4
+        with:
+          path: /tmp/archlinux/root/.cache/ccache
+          key: wine-tkg-ccache-${{ runner.os }}-x86_64
+
       - name: Upload Source
         if: steps.need_build.outputs.new_release == 'true'
         run: |
@@ -177,7 +184,8 @@ jobs:
           rm -rf .git
 
           git init
-          git checkout -b ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          echo "branch: "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
+          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -191,13 +199,6 @@ jobs:
           git push -u origin main --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Cache
-        if: steps.need_build.outputs.new_release == 'true'
-        uses: actions/cache@v4
-        with:
-          path: /tmp/archlinux/root/.cache/ccache
-          key: wine-tkg-ccache-${{ runner.os }}-x86_64
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
