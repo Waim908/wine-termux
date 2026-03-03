@@ -93,7 +93,8 @@ jobs:
         id: wine_tag
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          if [[ ${{ github.event.inputs.enable_mf }} == true ]]; then
+          get_input=${{ github.event.inputs.enable_mf }}
+          if [[ $get_input == true ]]; then
             echo "PKG_NAME=mf" >> $GITHUB_OUTPUT
           else
             echo "PKG_NAME=mfdxgi" >> $GITHUB_OUTPUT
