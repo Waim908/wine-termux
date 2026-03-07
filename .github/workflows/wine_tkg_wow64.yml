@@ -173,7 +173,7 @@ jobs:
           bash $GITHUB_WORKSPACE/mount.sh archlinux mount
           sudo chroot archlinux bash -x "/bin/build-wine.sh"
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
-          sudo chmod 777 /tmp/ccache.tar.xz
+          sudo chmod 777 /tmp/archlinux/tmp/ccache.tar.xz
 
       - name: Upload Cache
         if: steps.need_build.outputs.new_release == 'true'
