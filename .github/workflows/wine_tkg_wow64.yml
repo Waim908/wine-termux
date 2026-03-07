@@ -170,6 +170,7 @@ jobs:
           bash $GITHUB_WORKSPACE/mount.sh archlinux mount
           sudo chroot archlinux bash -x "/bin/build-wine.sh"
           bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
+          sudo chmod 777 archlinux/root/.cache/ccache
           ls -l archlinux/root/.cache/ccache
 
       - name: Upload Cache
