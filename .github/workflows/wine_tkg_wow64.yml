@@ -168,7 +168,11 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          key: wine-tkg-ccache-${{ runner.os }}-x86_64
+          # ✅ 修改：使用唯一的缓存键（包含运行ID）
+          key: wine-tkg-ccache-${{ runner.os }}-x86_64-${{ github.run_id }}
+          restore-keys: |
+            wine-tkg-ccache-${{ runner.os }}-x86_64-
+            wine-tkg-ccache-${{ runner.os }}-x86_64
 
       - name: Compile Use BCC
         if: steps.need_build.outputs.new_release == 'true'
@@ -181,10 +185,13 @@ jobs:
 
       - name: Upload Cache
         if: steps.need_build.outputs.new_release == 'true'
+        # ✅ 修改：只有在手动触发时或第一次运行时才保存缓存
+        if: steps.need_build.outputs.new_release == 'true' && github.run_attempt == 1
         uses: actions/cache/save@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          key: wine-tkg-ccache-${{ runner.os }}-x86_64
+          # ✅ 修改：使用唯一的缓存键（包含运行ID）
+          key: wine-tkg-ccache-${{ runner.os }}-x86_64-${{ github.run_id }}
 
       - name: Upload Source
         if: steps.need_build.outputs.new_release == 'true'
