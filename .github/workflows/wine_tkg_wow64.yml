@@ -184,7 +184,6 @@ jobs:
           sudo chmod 777 /tmp/archlinux/tmp/ccache.tar.xz
 
       - name: Upload Cache
-        if: steps.need_build.outputs.new_release == 'true'
         # ✅ 修改：只有在手动触发时或第一次运行时才保存缓存
         if: steps.need_build.outputs.new_release == 'true' && github.run_attempt == 1
         uses: actions/cache/save@v5
