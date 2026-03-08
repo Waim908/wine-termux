@@ -192,7 +192,7 @@ jobs:
           cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
           sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
           sudo chmod 666 wine-tkg-config.txt
-          rm -rf .git
+          sudo rm -rf .git
 
           git init
           echo "branch: "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
@@ -207,7 +207,7 @@ jobs:
 
           git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
 
-          git push -f
+          git push --set-upstream origin ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }} -f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
