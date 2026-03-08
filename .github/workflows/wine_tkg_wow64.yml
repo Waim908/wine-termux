@@ -195,6 +195,7 @@ jobs:
       - name: Upload Source
         if: steps.need_build.outputs.new_release == 'true'
         run: |
+          sudo chown -R $USER:$USER /tmp/archlinux/tmp/wine-tkg/src/wine-git
           cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
           sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
           sudo chmod 666 wine-tkg-config.txt
