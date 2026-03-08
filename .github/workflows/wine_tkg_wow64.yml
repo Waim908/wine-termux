@@ -134,13 +134,16 @@ jobs:
 
           # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
           sudo mkdir -p archlinux/root/.cache/ccache
-          sudo chmod -R 777 archlinux/root/.cache
+          # sudo chmod -R 777 archlinux/root/.cache
 
           cat > build-wine.sh << EOF
           #!/bin/bash
           mkdir ~/.cache
           [[ -d /tmp/wine-termux ]] || exit 1
-          [[ -f /tmp/archlinux/tmp/ccache.tar.xz ]] && { echo "use cache ✔";tar xvf /tmp/archlinux/tmp/ccache.tar.xz -C ~/.cache/;}
+          if [[ -f /tmp/ccache.tar.xz ]]; then
+            echo "use cache ✔"
+            tar xvf /tmp/ccache.tar.xz -C ~/.cache/
+          fi
           export USE_CACHE=1
           export ENABLE_PROTON_MF=${{ github.event.inputs.enable_mf }}
 
@@ -151,9 +154,9 @@ jobs:
           yes | ./non-makepkg-build.sh || exit 1
           cd /tmp/output/
 
-          tar -I 'xz -T$(nproc)' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
+          tar -I 'xz -T$(nproc) -9' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
           cd ~/.cache/
-          tar -I 'xz -$(nproc)' -cvf /tmp/ccache.tar.xz ccache
+          tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
           EOF
 
           sudo chmod 777 build-wine.sh
