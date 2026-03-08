@@ -133,7 +133,7 @@ jobs:
           sudo cp -r -p $GITHUB_WORKSPACE/ archlinux/tmp/
 
           # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
-          sudo mkdir -p archlinux/root/.cache/ccache
+          # sudo mkdir -p archlinux/root/.cache/ccache
           # sudo chmod -R 777 archlinux/root/.cache
 
           cat > build-wine.sh << EOF
