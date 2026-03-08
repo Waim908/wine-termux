@@ -161,7 +161,7 @@ jobs:
 
       - name: Cache ccache directory in rootfs
         if: steps.need_build.outputs.new_release == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
           key: wine-tkg-ccache-${{ runner.os }}-x86_64
@@ -177,7 +177,7 @@ jobs:
 
       - name: Upload Cache
         if: steps.need_build.outputs.new_release == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache/save@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
           key: wine-tkg-ccache-${{ runner.os }}-x86_64
@@ -186,7 +186,7 @@ jobs:
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
-          cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
+          sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
           sudo chmod 666 wine-tkg-config.txt
           rm -rf .git
 
