@@ -102,7 +102,7 @@ jobs:
           wine_tag=${{ steps.wine-mirror.outputs.tag }} # wine-10.0
           echo "wine_tag=${{ steps.wine-mirror.outputs.tag }}" >> $GITHUB_OUTPUT
           wine_ver="${wine_tag#wine-}"   # 10.0
-          echo="wine_ver=$wine_ver" >> $GITHUB_OUTPUT
+          echo "wine_ver=$wine_ver" >> $GITHUB_OUTPUT
 
       # 只有检测到新 release（或手动触发）才执行你的脚本
       - name: Clone project
@@ -156,6 +156,7 @@ jobs:
 
           tar -I 'xz -T$(nproc) -9' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
           cd ~/.cache/
+          rm -rf /tmp/ccache.tar.xz
           tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
           EOF
 
