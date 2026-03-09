@@ -202,8 +202,8 @@ jobs:
           sudo rm -rf .git
 
           git init
-          echo "branch: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
-          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
+          echo "branch: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}"
+          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -214,18 +214,19 @@ jobs:
 
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
 
-          git push --set-upstream origin ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }} -f
+          git push --set-upstream origin ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }} -f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
-          name: Wine TkG Stg GE ${{ steps.wine_tag.outputs.wine_tag }} # 例如：Proton Wine 10.0-4
+          target_commitish: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}
+          tag_name: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}
+          name: Wine ${{ steps.wine_tag.outputs.wine_ver }} ${{ steps.wine_tag.outputs.PKG_NAME }} TkG Stg GE # 例如：Proton Wine 10.0-4
           body: |
             源码修改查看此仓库补丁。
           files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
