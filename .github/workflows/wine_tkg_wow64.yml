@@ -202,7 +202,7 @@ jobs:
           sudo rm -rf .git
 
           git init
-          echo "branch: "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
+          echo "branch: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
           git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
 
           git config user.name "github-actions[bot]"
