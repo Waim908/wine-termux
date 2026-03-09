@@ -198,12 +198,12 @@ jobs:
           sudo chown -R $USER:$USER /tmp/archlinux/tmp/wine-tkg/src/wine-git
           cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
           sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
-          sudo chmod 666 wine-tkg-config.txt
+          sudo chmod 644 wine-tkg-config.txt
           sudo rm -rf .git
 
           git init
           echo "branch: "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
-          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
