@@ -212,7 +212,7 @@ jobs:
 
           git commit -m "Upload ${{ steps.wine_tag.outputs.wine_tag }}"
 
-          git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
 
           git push --set-upstream origin ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }} -f
         env:
