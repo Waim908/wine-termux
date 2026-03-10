@@ -1,0 +1,5 @@
+MODULE    = ksuser.dll
+
+EXTRADLLFLAGS = -Wb,--prefer-native
+
+VER_PRODUCTVERSION = 5,3,0,900
