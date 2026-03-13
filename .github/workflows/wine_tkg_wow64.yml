@@ -80,7 +80,7 @@ jobs:
         id: need_build
         run: |
           event_name="${{ github.event_name }}"
-          
+
           if [ "$event_name" = "workflow_dispatch" ]; then
             echo "Manual dispatch, force build."
             echo "new_release=true" >> "$GITHUB_OUTPUT"
@@ -103,7 +103,6 @@ jobs:
         run: |
           wine_tag="${{ steps.wine-mirror.outputs.tag }}"
           wine_ver="${wine_tag#wine-}"
-          pkg_name="mfdxgi"
           if [[ "${{ steps.wine-mirror.outputs.enable_mf }}" == "true" ]]; then
             pkg_name="mf"
           fi
@@ -139,7 +138,7 @@ jobs:
 
           # 解压并验证
           sudo tar xf wine-bcc.tar.xz || { echo "❌ Extract failed"; exit 1; }
-          
+
           if [ ! -d "archlinux" ]; then
             echo "❌ Expected 'archlinux' directory not found after extract!"
             exit 1
@@ -151,44 +150,44 @@ jobs:
 
           # 创建构建脚本
           cat > build-wine.sh << 'EOF'
-#!/bin/bash
-set -e
-mkdir -p ~/.cache
+          #!/bin/bash
+          set -e
+          mkdir -p ~/.cache
 
-if [ ! -d /tmp/wine-termux ]; then
-  echo "❌ Source dir /tmp/wine-termux not found!"
-  exit 1
-fi
+          if [ ! -d /tmp/wine-termux ]; then
+            echo "❌ Source dir /tmp/wine-termux not found!"
+            exit 1
+          fi
 
-# 加载 ccache
-if [ -f /tmp/ccache.tar.xz ]; then
-  echo "✅ Using cached ccache..."
-  mkdir -p ~/.cache/ccache
-  tar xvf /tmp/ccache.tar.xz -C ~/.cache/
-fi
+          # 加载 ccache
+          if [ -f /tmp/ccache.tar.xz ]; then
+            echo "✅ Using cached ccache..."
+            mkdir -p ~/.cache/ccache
+            tar xvf /tmp/ccache.tar.xz -C ~/.cache/
+          fi
 
-export USE_CACHE=1
-export ENABLE_PROTON_MF=${{ steps.wine-mirror.outputs.enable_mf }}
+          export USE_CACHE=1
+          export ENABLE_PROTON_MF=${{ steps.wine-mirror.outputs.enable_mf }}
 
-cd /tmp/wine-tkg-git/wine-tkg-git/
+          cd /tmp/wine-tkg-git/wine-tkg-git/
 
-bash -x /tmp/wine-termux/patch.sh wine-tkg-auto "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
-bash -x /tmp/wine-termux/set-tkg-cfg.sh "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git || exit 1
+          bash -x /tmp/wine-termux/patch.sh wine-tkg-auto "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
+          bash -x /tmp/wine-termux/set-tkg-cfg.sh "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git || exit 1
 
-echo '_ci_build="true"' >> customization.cfg
+          echo '_ci_build="true"' >> customization.cfg
 
-yes | ./non-makepkg-build.sh || exit 1
+          yes | ./non-makepkg-build.sh || exit 1
 
-cd /tmp/output/
+          cd /tmp/output/
 
-tar -I 'xz -T$(nproc) -9' -cvf "/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz" */
+          tar -I 'xz -T$(nproc) -9' -cvf "/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz" */
 
-cd ~/.cache/
-rm -rf /tmp/ccache.tar.xz
-tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
+          cd ~/.cache/
+          rm -rf /tmp/ccache.tar.xz
+          tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
 
-echo "✅ Build completed and ccache archived."
-EOF
+          echo "✅ Build completed and ccache archived."
+          EOF
 
           sudo chmod +x build-wine.sh
           sudo mv build-wine.sh archlinux/bin/build-wine.sh
@@ -199,10 +198,9 @@ EOF
         uses: actions/cache/restore@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          key: ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          key: wine-tkg-ccache-Linux-x86_64
           restore-keys: |
-            ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}
-            ccache-${{ runner.os }}
+            wine-tkg-ccache-Linux-x86_64
 
       - name: Compile Using BCC Chroot
         if: steps.need_build.outputs.new_release == 'true'
@@ -227,7 +225,7 @@ EOF
         uses: actions/cache/save@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          key: ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          key: wine-tkg-ccache-Linux-x86_64
 
       - name: Upload Source to wine-termux
         if: steps.need_build.outputs.new_release == 'true'
@@ -238,24 +236,26 @@ EOF
             exit 1
           fi
 
+          sudo chown -R $USER:$USER /tmp/archlinux/tmp/wine-tkg/src/wine-git
+          cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
+          sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
+          sudo chmod 644 wine-tkg-config.txt
+          sudo rm -rf .git
+
           cd "$src_dir"
-          cp /tmp/wine-termux/patch.sh .
-          cp /tmp/wine-termux/set-tkg-cfg.sh .
-          cp /tmp/wine-termux/customization.cfg.sample customization.cfg
-          echo "build_source='github-action-ci'" >> customization.cfg
 
           git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          branch_name="${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
+          branch_name="${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}"
           git checkout -b "$branch_name"
 
           git add .
           git commit -m "Auto-commit source for ${{ steps.wine_tag.outputs.wine_tag }} (PKG: ${{ steps.wine_tag.outputs.PKG_NAME }})"
 
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
-          git push --force-with-lease origin "$branch_name"
+          git push -f --set-upstream origin "$branch_name"
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
@@ -263,14 +263,12 @@ EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          target_commitish: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
-          tag_name: v${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
-          name: Wine ${{ steps.wine_tag.outputs.wine_ver }} (${% if steps.wine_tag.outputs.PKG_NAME == 'mf' %}MF{% else %}DXGI{% endif %}) TkG Staging GE
+          target_commitish: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}
+          tag_name: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          name: Wine ${{ steps.wine_tag.outputs.wine_ver }} (${% if steps.wine_tag.outputs.PKG_NAME == 'mf' %}mf{% else %}dxgi{% endif %}) TkG Staging GE
           body: |
             自动编译版本。
-
-            源码补丁查看：
-            https://github.com/Waim908/wine-termux/tree/${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+            [源码](https://github.com/Waim908/wine-termux/tree/${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }})
           files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
           draft: false
           prerelease: false

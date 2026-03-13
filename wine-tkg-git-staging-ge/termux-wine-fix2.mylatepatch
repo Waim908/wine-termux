@@ -10,7 +10,6 @@ diff -urN wine/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
 +        symlink( "/data/data/com.termux/files", "dosdevices/z:" );
      }
      else if (errno != EEXIST) fatal_perror( "cannot create %s/dosdevices", config_dir );
- 
 diff -urN wine/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
 --- wine/dlls/ntdll/unix/virtual.c	2025-10-23 00:20:16.172148853 +0800
 +++ b/dlls/ntdll/unix/virtual.c	2025-10-23 18:23:34.472823070 +0800
