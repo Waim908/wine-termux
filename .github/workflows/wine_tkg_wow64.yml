@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # 使用 cache 保存上一次看到的 tag
       - name: Restore last wine release tag from cache
@@ -45,17 +43,23 @@ jobs:
         id: wine-mirror
         env:
           CUSTOM_TAG: ${{ github.event.inputs.tag }}
-          TKG_VER: ${{ github.event.inputs.tkg }}
-          ENABLE_MF: ${{ github.event.inputs.enable_mf }}
+          ENABLE_MF: ${{ github.event.inputs.enable_mf || 'false' }}
         run: |
           if [ -n "$CUSTOM_TAG" ]; then
             echo "Use custom tag from manual dispatch: $CUSTOM_TAG"
             latest_tag="$CUSTOM_TAG"
           else
-            # https://github.com/wine-mirror/wine
-            latest_tag=$(git ls-remote --tags https://github.com/wine-mirror/wine.git | grep -Ev '\^\{\}$' | sed 's/.*\///' | grep -E '^wine-[0-9]+\.[0-9]+.*$' | sort -V | tail -n 1)
+            # 获取 wine-mirror/wine 的最新标签
+            latest_tag=$(git ls-remote --tags https://github.com/wine-mirror/wine.git | \
+              grep -Ev '\^\{\}$' | sed 's/.*\///' | grep -E '^wine-[0-9]+\.[0-9]+.*$' | sort -V | tail -n 1)
           fi
-          [[ -z "$lastest_tag" ]] || exit 1
+
+          # 🔴 关键修复：变量名拼写错误
+          if [ -z "$latest_tag" ]; then
+            echo "❌ Failed to get latest Wine tag!"
+            exit 1
+          fi
+
           echo "Latest Wine tag: $latest_tag"
           echo "$latest_tag" > .wine_current_tag
           echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
@@ -74,149 +78,184 @@ jobs:
 
       - name: Compare tags and decide whether to run build
         id: need_build
-        env:
-          EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
-            # 手动触发时无论是否与上次相同 tag 都执行
+          event_name="${{ github.event_name }}"
+          
+          if [ "$event_name" = "workflow_dispatch" ]; then
             echo "Manual dispatch, force build."
             echo "new_release=true" >> "$GITHUB_OUTPUT"
           else
-            if [ "${{ steps.wine-mirror.outputs.tag }}" != "${{ steps.last.outputs.tag }}" ]; then
+            current_tag="${{ steps.wine-mirror.outputs.tag }}"
+            last_tag="${{ steps.last.outputs.tag }}"
+            if [ "$current_tag" != "$last_tag" ]; then
+              echo "New release detected: $current_tag (was $last_tag)"
               echo "new_release=true" >> "$GITHUB_OUTPUT"
             else
+              echo "No change in Wine tag, skip build."
               echo "new_release=false" >> "$GITHUB_OUTPUT"
             fi
           fi
 
-      - name: Get Wine tag
-        id: wine_tag
+      # 只有需要构建时才执行后续步骤
+      - name: Set build variables
         if: steps.need_build.outputs.new_release == 'true'
+        id: wine_tag
         run: |
-          get_input=${{ github.event.inputs.enable_mf }}
-          if [[ $get_input == true ]]; then
-            echo "PKG_NAME=mf" >> $GITHUB_OUTPUT
-          else
-            echo "PKG_NAME=mfdxgi" >> $GITHUB_OUTPUT
+          wine_tag="${{ steps.wine-mirror.outputs.tag }}"
+          wine_ver="${wine_tag#wine-}"
+          pkg_name="mfdxgi"
+          if [[ "${{ steps.wine-mirror.outputs.enable_mf }}" == "true" ]]; then
+            pkg_name="mf"
           fi
-          wine_tag=${{ steps.wine-mirror.outputs.tag }} # wine-10.0
-          echo "wine_tag=${{ steps.wine-mirror.outputs.tag }}" >> $GITHUB_OUTPUT
-          wine_ver="${wine_tag#wine-}"   # 10.0
-          echo "wine_ver=$wine_ver" >> $GITHUB_OUTPUT
 
-      # 只有检测到新 release（或手动触发）才执行你的脚本
-      - name: Clone project
+          echo "wine_tag=$wine_tag" >> "$GITHUB_OUTPUT"
+          echo "wine_ver=$wine_ver" >> "$GITHUB_OUTPUT"
+          echo "PKG_NAME=$pkg_name" >> "$GITHUB_OUTPUT"
+
+      - name: Clone project & setup rootfs
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           echo "Using Wine tag: ${{ steps.wine_tag.outputs.wine_tag }}"
 
           cat > ~/.gitconfig << EOF
           [fetch]
-            parallel = `nproc`
+            parallel = $(nproc)
           [submodule]
-            fetchJobs = `nproc`
+            fetchJobs = $(nproc)
           EOF
 
-          # git clone -b "${{ steps.wine_tag.outputs.wine_tag }}" https://github.com/wine-mirror/wine wine-src
-          if [[ -z $TKG_VER ]]; then
+          # 克隆 TkG 项目
+          tkg_branch="${{ github.event.inputs.tkg }}"
+          if [ -z "$tkg_branch" ]; then
             git clone https://github.com/Frogging-Family/wine-tkg-git.git
           else
-            git clone -b $TKG_VER https://github.com/Frogging-Family/wine-tkg-git.git
+            git clone -b "$tkg_branch" https://github.com/Frogging-Family/wine-tkg-git.git
           fi
+
           cd /tmp
 
+          # 下载 BCC 根文件系统
           aria2c -s$(nproc) -x$(nproc) https://github.com/Waim908/BCC/releases/download/wine-bcc-latest/wine-bcc.tar.xz
 
-          sudo tar xf wine-bcc.tar.xz || exit 1
-          # sudo mv $GITHUB_WORKSPACE/wine-src archlinux/tmp/
-          sudo mv $GITHUB_WORKSPACE/wine-tkg-git archlinux/tmp/
-          sudo cp -r -p $GITHUB_WORKSPACE/ archlinux/tmp/
-
-          # 为 rootfs 内的 ccache 目录预留位置（/tmp/archlinux/root/.cache/ccache）
-          # sudo mkdir -p archlinux/root/.cache/ccache
-          # sudo chmod -R 777 archlinux/root/.cache
-
-          cat > build-wine.sh << EOF
-          #!/bin/bash
-          mkdir ~/.cache
-          [[ -d /tmp/wine-termux ]] || exit 1
-          if [[ -f /tmp/ccache.tar.xz ]]; then
-            echo "use cache ✔"
-            tar xvf /tmp/ccache.tar.xz -C ~/.cache/
+          # 解压并验证
+          sudo tar xf wine-bcc.tar.xz || { echo "❌ Extract failed"; exit 1; }
+          
+          if [ ! -d "archlinux" ]; then
+            echo "❌ Expected 'archlinux' directory not found after extract!"
+            exit 1
           fi
-          export USE_CACHE=1
-          export ENABLE_PROTON_MF=${{ github.event.inputs.enable_mf }}
 
-          cd /tmp/wine-tkg-git/wine-tkg-git/
-          bash -x /tmp/wine-termux/patch.sh wine-tkg-auto ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
-          bash -x /tmp/wine-termux/set-tkg-cfg.sh ${{ steps.wine_tag.outputs.wine_tag }} /tmp/wine-tkg-git/wine-tkg-git || exit 1
-          echo '_ci_build="true"' >> customization.cfg
-          yes | ./non-makepkg-build.sh || exit 1
-          cd /tmp/output/
+          # 移动项目到 rootfs
+          sudo mv "$GITHUB_WORKSPACE/wine-tkg-git" archlinux/tmp/
+          sudo cp -r -p "$GITHUB_WORKSPACE/"* archlinux/tmp/
 
-          tar -I 'xz -T$(nproc) -9' -cvf /tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz */
-          cd ~/.cache/
-          rm -rf /tmp/ccache.tar.xz
-          tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
-          EOF
+          # 创建构建脚本
+          cat > build-wine.sh << 'EOF'
+#!/bin/bash
+set -e
+mkdir -p ~/.cache
 
-          sudo chmod 777 build-wine.sh
-          sudo cp -r -p build-wine.sh archlinux/bin/
+if [ ! -d /tmp/wine-termux ]; then
+  echo "❌ Source dir /tmp/wine-termux not found!"
+  exit 1
+fi
 
-      - name: Cache ccache directory in rootfs
+# 加载 ccache
+if [ -f /tmp/ccache.tar.xz ]; then
+  echo "✅ Using cached ccache..."
+  mkdir -p ~/.cache/ccache
+  tar xvf /tmp/ccache.tar.xz -C ~/.cache/
+fi
+
+export USE_CACHE=1
+export ENABLE_PROTON_MF=${{ steps.wine-mirror.outputs.enable_mf }}
+
+cd /tmp/wine-tkg-git/wine-tkg-git/
+
+bash -x /tmp/wine-termux/patch.sh wine-tkg-auto "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git/wine-tkg-userpatches || exit 1
+bash -x /tmp/wine-termux/set-tkg-cfg.sh "${{ steps.wine_tag.outputs.wine_tag }}" /tmp/wine-tkg-git/wine-tkg-git || exit 1
+
+echo '_ci_build="true"' >> customization.cfg
+
+yes | ./non-makepkg-build.sh || exit 1
+
+cd /tmp/output/
+
+tar -I 'xz -T$(nproc) -9' -cvf "/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz" */
+
+cd ~/.cache/
+rm -rf /tmp/ccache.tar.xz
+tar -I 'xz -T$(nproc)' -cvf /tmp/ccache.tar.xz ccache
+
+echo "✅ Build completed and ccache archived."
+EOF
+
+          sudo chmod +x build-wine.sh
+          sudo mv build-wine.sh archlinux/bin/build-wine.sh
+
+      # --- ccache 缓存恢复 ---
+      - name: Restore ccache
         if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache/restore@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          # ✅ 修改：使用唯一的缓存键（包含运行ID）
-          key: wine-tkg-ccache-${{ runner.os }}-x86_64-${{ github.run_id }}
+          key: ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}
           restore-keys: |
-            wine-tkg-ccache-${{ runner.os }}-x86_64-
-            wine-tkg-ccache-${{ runner.os }}-x86_64
+            ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}
+            ccache-${{ runner.os }}
 
-      - name: Compile Use BCC
+      - name: Compile Using BCC Chroot
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           cd /tmp
-          bash $GITHUB_WORKSPACE/mount.sh archlinux mount
-          sudo chroot archlinux bash -x "/bin/build-wine.sh"
-          bash $GITHUB_WORKSPACE/mount.sh archlinux unmount
-          sudo chmod 777 /tmp/archlinux/tmp/ccache.tar.xz
+          bash "$GITHUB_WORKSPACE/mount.sh" archlinux mount
+          sudo chroot archlinux /bin/build-wine.sh
+          bash "$GITHUB_WORKSPACE/mount.sh" archlinux unmount
 
-      - name: Upload Cache
-        # ✅ 修改：只有在手动触发时或第一次运行时才保存缓存
+          # 确保生成产物存在
+          if [ ! -f "/tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz" ]; then
+            echo "❌ Build output not found!"
+            exit 1
+          fi
+
+          sudo chmod 644 "/tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz"
+          sudo chmod 644 /tmp/archlinux/tmp/ccache.tar.xz
+
+      # --- 保存 ccache 缓存 ---
+      - name: Save ccache
         if: steps.need_build.outputs.new_release == 'true' && github.run_attempt == 1
         uses: actions/cache/save@v5
         with:
           path: /tmp/archlinux/tmp/ccache.tar.xz
-          # ✅ 修改：使用唯一的缓存键（包含运行ID）
-          key: wine-tkg-ccache-${{ runner.os }}-x86_64-${{ github.run_id }}
+          key: ccache-${{ runner.os }}-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}
 
-      - name: Upload Source
+      - name: Upload Source to wine-termux
         if: steps.need_build.outputs.new_release == 'true'
         run: |
-          sudo chown -R $USER:$USER /tmp/archlinux/tmp/wine-tkg/src/wine-git
-          cd /tmp/archlinux/tmp/wine-tkg/src/wine-git/
-          sudo cp -r -p /tmp/archlinux/tmp/output/*/share/wine/wine-tkg-config.txt .
-          sudo chmod 644 wine-tkg-config.txt
-          sudo rm -rf .git
+          src_dir="/tmp/archlinux/tmp/wine-tkg/src/wine-git"
+          if [ ! -d "$src_dir" ]; then
+            echo "❌ Source directory not found: $src_dir"
+            exit 1
+          fi
+
+          cd "$src_dir"
+          cp /tmp/wine-termux/patch.sh .
+          cp /tmp/wine-termux/set-tkg-cfg.sh .
+          cp /tmp/wine-termux/customization.cfg.sample customization.cfg
+          echo "build_source='github-action-ci'" >> customization.cfg
 
           git init
-          echo "branch: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}"
-          git checkout -b "${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}"
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add .
+          branch_name="${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}"
+          git checkout -b "$branch_name"
 
-          git commit -m "Upload ${{ steps.wine_tag.outputs.wine_tag }}"
+          git add .
+          git commit -m "Auto-commit source for ${{ steps.wine_tag.outputs.wine_tag }} (PKG: ${{ steps.wine_tag.outputs.PKG_NAME }})"
 
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Waim908/wine-termux.git
-
-          git push --set-upstream origin ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }} -f
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push --force-with-lease origin "$branch_name"
 
       - name: Create GitHub Release
         if: steps.need_build.outputs.new_release == 'true'
@@ -224,20 +263,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          target_commitish: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}
-          tag_name: ${{ steps.wine_tag.outputs.wine_ver }}${{ steps.wine_tag.outputs.PKG_NAME }}
-          name: Wine ${{ steps.wine_tag.outputs.wine_ver }} ${{ steps.wine_tag.outputs.PKG_NAME }} TkG Stg GE # 例如：Proton Wine 10.0-4
+          target_commitish: ${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          tag_name: v${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          name: Wine ${{ steps.wine_tag.outputs.wine_ver }} (${% if steps.wine_tag.outputs.PKG_NAME == 'mf' %}MF{% else %}DXGI{% endif %}) TkG Staging GE
           body: |
-            源码修改查看此仓库补丁。
-          files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_tag }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
+            自动编译版本。
 
-      # 更新缓存里的 last_tag（保持和 latest 对齐）
+            源码补丁查看：
+            https://github.com/Waim908/wine-termux/tree/${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}
+          files: /tmp/archlinux/tmp/wine-${{ steps.wine_tag.outputs.wine_ver }}-${{ steps.wine_tag.outputs.PKG_NAME }}-tkg-stg-ge.tar.xz
+          draft: false
+          prerelease: false
+
       - name: Save current tag to cache file
         if: steps.need_build.outputs.new_release == 'true'
         run: |
           cp .wine_current_tag .wine_last_tag
 
-      - name: Update cache with new tag
+      - name: Update tag cache
         if: steps.need_build.outputs.new_release == 'true'
         uses: actions/cache@v4
         with:
