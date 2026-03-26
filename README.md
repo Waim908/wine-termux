@@ -1,3 +1,8 @@
+# Stop Update
+
+Due to the large number of projects and my busy schedule, I have to suspend the updates for now.
+
+
 # Wine for Termux
 
 通过补丁使 x86_64 Wine 在 Termux glibc 和 Box64 环境中可以正常运行，并修复一些问题。
